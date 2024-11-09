@@ -274,14 +274,6 @@ export default function EntitiesManager(props:Props){
                                             <div className="entity-selected-data"><span className="entity-selected-info">HEX:</span></div>
                                             <div id="entityColorHEX" className="entity-selected-data">{entitySelected.Color}</div>
                                         </div>
-                                        <div className="data-field-container">
-                                            <div className="entity-selected-data"><span className="entity-selected-info">HSL:</span></div>
-                                            <div id="entityColorHSL" className="entity-selected-data">{entitySelected.Color}</div>
-                                        </div>
-                                        <div className="data-field-container">
-                                            <div className="entity-selected-data"><span className="entity-selected-info">RGB:</span></div>
-                                            <div id="entityColorRGB" className="entity-selected-data">{entitySelected.Color}</div>
-                                        </div>
                                     </div>
                                     <div  id="entity-color-list" className="entity-color-list">
                                     {
