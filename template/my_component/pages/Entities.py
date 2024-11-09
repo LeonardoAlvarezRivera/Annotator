@@ -43,6 +43,12 @@ iframe[title="my_component.my_component"] {
     max-width: none !important; 
 }
 
+.st-emotion-cache-13ln4jf {
+    width: 100%;
+    padding: 0rem 0rem 0rem !important;
+    max-width: none !important; 
+}
+
 .st-emotion-cache-uf99v8 {
     display: flex;
     flex-direction: column;
