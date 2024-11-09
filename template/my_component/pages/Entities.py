@@ -51,6 +51,16 @@ iframe[title="my_component.my_component"] {
     -webkit-box-align: center;
     /*align-items: ;*/
 }
+
+.st-emotion-cache-bm2z3a {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow: auto;
+    -webkit-box-align: center;
+    /*align-items: ;*/
+}
+
 .st-emotion-cache-1ln2a99 {
     gap: 0rem !important;
 }
