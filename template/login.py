@@ -24,5 +24,6 @@ if authentication_status == False:
     st.error('Username/password is incorrect')
 elif authentication_status == None:
     st.warning('Please enter your username and password')
-else :     
-    example.open(name, authenticator)
+
+
+example.open(name, authenticator)
