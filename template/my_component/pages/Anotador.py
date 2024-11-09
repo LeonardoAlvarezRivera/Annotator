@@ -19,6 +19,18 @@ page_anotador_default = """
     display: none;
 }
 
+.st-emotion-cache-12fmjuu {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    height: 2.875rem;
+    background: rgb(255, 255, 255);
+    outline: none;
+    z-index: 999990;
+    display: none;
+}
+
 iframe[title="my_component.my_component"] {
     border: 0px;
     width: 100vw;
@@ -26,6 +38,13 @@ iframe[title="my_component.my_component"] {
 }
 
 .st-emotion-cache-1y4p8pa {
+    width: 100%;
+    padding: 0rem 0rem 0rem !important;
+    max-width: none !important; 
+}
+
+
+.st-emotion-cache-13ln4jf {
     width: 100%;
     padding: 0rem 0rem 0rem !important;
     max-width: none !important; 
@@ -46,6 +65,15 @@ iframe[title="my_component.my_component"] {
     flex: 1 1 0%;
     flex-direction: column;
     gap: 0rem !important;
+}
+
+.st-emotion-cache-bm2z3a {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow: auto;
+    -webkit-box-align: center;
+    /*align-items: ;*/
 }
 <style>
 """
