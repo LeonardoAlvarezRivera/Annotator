@@ -19,6 +19,18 @@ page_anotador_default = """
     display: none;
 }
 
+.st-emotion-cache-12fmjuu {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    height: 2.875rem;
+    background: rgb(255, 255, 255);
+    outline: none;
+    z-index: 999990;
+    display: none;
+}
+
 iframe[title="my_component.my_component"] {
     border: 0px;
     width: 100vw;
