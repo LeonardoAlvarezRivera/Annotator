@@ -2,7 +2,7 @@ import streamlit as st
 import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
-with open('credentials.yaml') as file:
+with open('template/credentials.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
 from my_component import example
 
