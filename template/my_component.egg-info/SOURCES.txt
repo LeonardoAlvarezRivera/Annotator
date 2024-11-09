@@ -1,0 +1,11 @@
+LICENSE
+MANIFEST.in
+README.md
+setup.py
+my_component/__init__.py
+my_component/example.py
+my_component.egg-info/PKG-INFO
+my_component.egg-info/SOURCES.txt
+my_component.egg-info/dependency_links.txt
+my_component.egg-info/requires.txt
+my_component.egg-info/top_level.txt
