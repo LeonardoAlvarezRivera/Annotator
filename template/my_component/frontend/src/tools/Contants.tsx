@@ -1,0 +1,3 @@
+export const FILE_PARSE_ENTITIES_CSV = 0;
+export const FILE_PARSE_DOCUMENT_HTML = 1;
+export const FILE_PARSE_DOCUMENT_TEXT = 2;
