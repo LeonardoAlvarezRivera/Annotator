@@ -639,7 +639,7 @@ class Anotator extends React.Component<Props>{
         </div>
         <div className="area-container">
             
-            <CorpusComponent Entities={this.entityList} Annotation={this._tmpAnotationSelected} tagSelected={this.isTagSelected} AnnotationList={this._annotationsList} AnnotationsSelected={this._AnnotationsSelectedList} showAnnotations={this.handleShowAnnotations}/>
+            <CorpusComponent Entities={this.entityList} Annotation={this._tmpAnotationSelected} tagSelected={this.isTagSelected} AnnotationList={this._annotationsList} AnnotationsSelected={this._AnnotationsSelectedList} showAnnotations={this.handleShowAnnotations} handleNewDocument={this.handleFileChange}/>
             <div id="Table" className="area-table area-tool">
                  
             </div>
