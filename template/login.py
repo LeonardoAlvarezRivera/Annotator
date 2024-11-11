@@ -40,3 +40,5 @@ def open():
         NER.run()
     elif option == 'Users':
         NER.run()
+
+open()
