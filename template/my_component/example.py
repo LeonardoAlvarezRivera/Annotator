@@ -3,7 +3,7 @@ from streamlit_option_menu import option_menu
 from my_component.pages import Anotador, Entities, NER
 
 #def open(name, authenticator):
-def open(name):
+def open():
     with st.sidebar:
         columns= st.columns((1,1))
         with columns[0]:
