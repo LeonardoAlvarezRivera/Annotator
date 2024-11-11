@@ -1,14 +1,13 @@
 import streamlit as st
 
 from template.my_component import example
-
+from my_component import example
 '''
 import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
 with open('template/credentials.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
-from my_component import example
 
 authenticator = stauth.Authenticate(
     config['credentials'],
