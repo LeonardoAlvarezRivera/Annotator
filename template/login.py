@@ -1,7 +1,7 @@
 import streamlit as st
 
 from my_component import example
-'''
+"""
 import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
@@ -27,5 +27,5 @@ elif authentication_status == False:
     st.error('Username/password is incorrect')
 elif authentication_status == None:
     st.warning('Please enter your username and password')
-'''
+"""
 example.open()
