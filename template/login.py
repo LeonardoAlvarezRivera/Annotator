@@ -1,6 +1,5 @@
 import streamlit as st
 
-from template.my_component import example
 from my_component import example
 '''
 import streamlit_authenticator as stauth
