@@ -33,8 +33,8 @@ page_anotador_default = """
 
 iframe[title="my_component.my_component"] {
     border: 0px;
-    width: 80vw;
-    height:95vh
+    width: 100vw;
+    height:100vh
 }
 
 .st-emotion-cache-1y4p8pa {
