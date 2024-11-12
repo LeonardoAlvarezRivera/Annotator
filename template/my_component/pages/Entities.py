@@ -33,7 +33,7 @@ page_anotador_default = """
 
 iframe[title="my_component.my_component"] {
     border: 0px;
-    width: 90vw;
+    width: 80vw;
     height:95vh
 }
 
