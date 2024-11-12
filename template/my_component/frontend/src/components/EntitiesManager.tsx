@@ -20,7 +20,7 @@ var entitySelected: Entity = {
     id: 0,
     Entity: "Mobility",
     Code: "e_1",
-    Color: getEntityColor(),
+    Color: "#d0d176",
     Fields: 3,
     FieldList: [],
     Actions: 0,
@@ -93,10 +93,6 @@ const showEntityInfo = () =>
     
         let colorHEX = document.getElementById("entityColorHEX");
         if (colorHEX) colorHEX.innerHTML = entitySelected.Color;
-        let colorHSL = document.getElementById("entityColorHSL");
-        if (colorHSL) colorHSL.innerHTML = entitySelected.Color;
-        let colorRGB = document.getElementById("entityColorRGB");
-        if (colorRGB) colorRGB.innerHTML = entitySelected.Color;
     
         createEntityFields(entitySelected.FieldList!);
     }
@@ -127,7 +123,16 @@ const validateExistsEntities = ():boolean =>
 
 export default function EntitiesManager(props:Props){
         const apiRef = useGridApiRef();
-        
+        entitySelected = {
+            id: 0,
+            Entity: "Mobility",
+            Code: "e_1",
+            Color: "#ffffff",
+            Fields: 3,
+            FieldList: [],
+            Actions: 0,
+            selected: true
+        };
 
         const updateDataGrid = () => {
             showEntityInfo();
