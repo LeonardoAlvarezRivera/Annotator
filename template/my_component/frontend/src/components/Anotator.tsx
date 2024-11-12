@@ -641,25 +641,7 @@ class Anotator extends React.Component<Props>{
             
             <CorpusComponent Entities={this.entityList} Annotation={this._tmpAnotationSelected} tagSelected={this.isTagSelected} AnnotationList={this._annotationsList} AnnotationsSelected={this._AnnotationsSelectedList} showAnnotations={this.handleShowAnnotations} handleNewDocument={this.handleFileChange}/>
             <div id="Table" className="area-table area-tool">
-            <div className="area-tool-container">
-                <div className="area-details-header">
-                <div className="area-details-header-content">
-                    <i className="area-details-title">Annotation Details</i>
-                </div>
-                <div id="area-corpus-separator" className="separator"></div>
-                </div>
-                <div className="area-details-content">
-                <div className="area-details-info">
-                <div className="area-details-data"><span className="area-details-data-title">Text:</span> {this._AnnotationSelected.text}</div>
-                        <div className="area-details-data"><span className="area-details-data-title">First Entity:</span> {this.getEntityById(this._tmpAnotationSelected.firstEntityId)?.Entity}</div>
-                        <div className="area-details-data">&emsp; &emsp;<span className="area-details-data-title">First Field:</span> {(this._AnnotationSelected.fieldsFirstEntity!.length >= 1)?this.getFieldByCode(this._tmpAnotationSelected.fieldsFirstEntity![0],this._tmpAnotationSelected.firstEntityId)?.name:'undefined'}</div>
-                        <div className="area-details-data">&emsp; &emsp;<span className="area-details-data-title">Second Field:</span> {(this._AnnotationSelected.fieldsFirstEntity!.length >= 2)?this.getFieldByCode(this._tmpAnotationSelected.fieldsFirstEntity![1],this._tmpAnotationSelected.firstEntityId)?.name:'undefined'}</div>
-                        <div className="area-details-data"><span className="area-details-data-title">Second Entity:</span> {this.getEntityById(this._tmpAnotationSelected.secondEntityId)?.Entity}</div>
-                        <div className="area-details-data">&emsp; &emsp;<span className="area-details-data-title">First Field:</span> {(this._AnnotationSelected.fieldsSecondEntity!.length >= 1)?this.getFieldByCode(this._tmpAnotationSelected.fieldsSecondEntity![0],this._tmpAnotationSelected.secondEntityId)?.name:'undefined'}</div>
-                        <div className="area-details-data">&emsp; &emsp;<span className="area-details-data-title">Second Field:</span> {(this._AnnotationSelected.fieldsSecondEntity!.length >= 2)?this.getFieldByCode(this._tmpAnotationSelected.fieldsSecondEntity![1],this._tmpAnotationSelected.secondEntityId)?.name:'undefined'}</div>
-                </div>
-                </div>
-            </div>
+                 
             </div>
             <div id="Details" className="area-details area-tool">
             <div className="area-tool-container">
