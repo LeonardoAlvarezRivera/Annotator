@@ -200,7 +200,7 @@
 }
 
 .iborrainputfile {
-	font-size:16px; 
+	font-size:12px; 
 	font-weight:normal;
 	font-family:Arial, Helvetica, sans-serif;
 }
@@ -240,7 +240,8 @@
 
 .inputfile-document + label {
   max-width: 100%;
-  font-size: 1.25rem;
+  max-height: 30px;
+  font-size: 0.9rem;
   font-weight: 700;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -458,7 +459,7 @@
   
   .area-corpus-title{
     height: 28px;
-    max-width: 600px;
+    max-width: calc(100% - 290px);
     position: absolute !important;
     right: 20px;
     color: var(--text);
@@ -467,7 +468,7 @@
     font-weight: bold;
     font-family: sans-serif;
     font-style: normal;
-    font-size: 20px;
+    font-size: 16px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
