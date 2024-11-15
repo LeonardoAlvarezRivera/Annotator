@@ -34,7 +34,7 @@ page_anotador_default = """
 iframe[title="my_component.my_component"] {
     border: 0px;
     width: calc(100vw - 250px );
-    height: calc(100vh - 50px);
+    height: calc(100vh - 60px);
 }
 
 .st-emotion-cache-1y4p8pa {
