@@ -153,7 +153,7 @@ export default function CorpusComponent(props:ContextMenuProps){
                                 <span className="iborrainputfile">New Document</span>
                             </label>
                     </div>
-                    <i className="area-corpus-title" id="document-title">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</i>
+                    <i className="area-corpus-title" id="document-title"></i>
                 </div>
                 <div id="area-corpus-separator" className="separator"></div>
                 </div>
