@@ -81,13 +81,14 @@
   
   /* Buttons */
   .button-option{
-    height: 28px;
-    width: 28px;
+    height: 24px;
+    width: 24px;
     background: transparent;
     border-style: solid;
     border-radius: 5px;
     margin-left: 8px;
     margin-right: 2px;
+    font-size: 12px;
   }
   
   .button-option-small{
@@ -745,7 +746,7 @@
       font-family: 'Material Symbols Outlined';
       font-weight: normal;
       font-style: normal;
-      font-size: 18px;
+      font-size: 18px !important;
       line-height: 1;
       letter-spacing: normal;
       text-transform: none;
@@ -989,8 +990,8 @@
   }
  
   .area-document-item{
-    padding-bottom: 10px;
-    padding-top: 10px;
+    padding-bottom: 6px;
+    padding-top: 6px;
     padding-left: 5px;
     width: 100%;
     height:fit-content;
@@ -999,13 +1000,13 @@
     white-space: nowrap;
     overflow: hidden;
     cursor: pointer;
+    font-size: 13px;
 
   }
 
   .area-document-item:hover{
-    background-color: var(--sea-blue);
+    background-color: aliceblue;
     color: white;
-
     border-radius: 5px;
   }
 
