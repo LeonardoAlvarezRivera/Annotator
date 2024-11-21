@@ -677,8 +677,8 @@
   .area-entity-rectangle{
     margin-left: 5px;
     margin-right: 5px;
-    height: 52px;
-    width: 100px;
+    height: 42px;
+    width: 70px;
     border-radius: 5px;
   }
   
@@ -900,7 +900,7 @@
     font-weight: normal;
     font-family: sans-serif;
     font-style: normal;
-    font-size: 20px;
+    font-size: 16px;
   }
 
   .entity-selected-data-name{
@@ -912,7 +912,7 @@
     font-weight: bold;
     font-family: sans-serif;
     font-style: normal;
-    font-size: 38px;
+    font-size: 28px;
   }
 
   .entity-selected-info{
@@ -962,14 +962,14 @@
 
   .entity-color-list{
     width: 320px;
-    height: 350px;
+    margin-bottom: 10px;
     overflow-y: scroll;
   }
 
 
   .entity-color-item{
-    height: 40px;
-    width: 70px;
+    height: 30px;
+    width: 50px;
     margin: 1px;
     border: 10px;
     display: inline-flex;
