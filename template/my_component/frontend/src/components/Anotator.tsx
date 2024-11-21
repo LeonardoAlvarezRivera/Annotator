@@ -609,7 +609,7 @@ class Anotator extends React.Component<Props>{
                         this.entityList.map((entity) => (
                         <div className="area-entity-item-container">
                             <div className="area-entity-item">
-                                <Checkbox checked={entity.selected} indeterminate={this.handleCheckSemiSelected(entity)} onChange={() => this.handleEntityCheckChange(entity)} className="area-entity-checkbox"/>
+                                <Checkbox size="small" checked={entity.selected} indeterminate={this.handleCheckSemiSelected(entity)} onChange={() => this.handleEntityCheckChange(entity)} className="area-entity-checkbox"/>
                                 
                                 <div className="area-entity-circle" style={{background: entity.Color}}></div>
                                 <div className="area-entity-data"><span className="area-entity-label">{entity.Entity}</span> </div>

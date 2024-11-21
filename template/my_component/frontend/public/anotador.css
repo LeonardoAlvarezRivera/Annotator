@@ -489,6 +489,7 @@
     width: 100%;
     margin-top: 10px;
     padding-right: 5px;
+    padding-top: 10px;
     color: var(--text);
     text-align:justify;
     font-weight: normal;
@@ -646,7 +647,7 @@
   
   .area-entity-item{
     width: calc(100% - 40px);
-    height: 20px;
+    height: 18px;
     display:flex;
     align-items: center;
     margin-bottom: 10px;
