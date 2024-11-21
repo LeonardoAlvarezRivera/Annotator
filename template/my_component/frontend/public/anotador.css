@@ -957,13 +957,19 @@
     border-color: #51585e;
     height: auto;
     margin: 10px;
-    padding: 10px;
+    padding: 5px 10px 5px 10px;
   }
+
+  .entity-rounded-pill > .entity-field-name{
+    font-size: 13px;
+  }
+
+
 
   .entity-color-list{
     width: 320px;
     margin-bottom: 10px;
-    overflow-y: scroll;
+    overflow-y:hidden;
   }
 
 
