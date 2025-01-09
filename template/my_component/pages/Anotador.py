@@ -73,7 +73,7 @@ iframe[title="my_component.my_component"] {
     width: 100%;
     overflow: auto;
     -webkit-box-align: center;
-    /*align-items: ;*/
+    align-items: baseline;
 }
 <style>
 """
