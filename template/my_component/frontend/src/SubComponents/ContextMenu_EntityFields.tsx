@@ -13,10 +13,11 @@ interface ContextMenuEntityFieldsProps {
     fieldSelected:number,
     annotation:Annotation,
     annotationList:Annotation[],
-    closeContextMenu: () => void
+    closeContextMenu: () => void,
+    refreshData: () => void
 }
 
-const ContextMenu_EntityFields:FC<ContextMenuEntityFieldsProps> = ({entities, entityId, fieldIndex, fieldSelected, annotation, annotationList, closeContextMenu}) => {
+const ContextMenu_EntityFields:FC<ContextMenuEntityFieldsProps> = ({entities, entityId, fieldIndex, fieldSelected, annotation, annotationList, closeContextMenu, refreshData}) => {
 
     const _annotationsService = new AnnotationService();
     var annotationsToSave:Annotation[] = [];
@@ -123,7 +124,7 @@ const ContextMenu_EntityFields:FC<ContextMenuEntityFieldsProps> = ({entities, en
     {
         var result = _annotationsService.updateBulk(annotationsToSave);
         result.then(result => {
-
+            refreshData();
             //comunicar con el componente de anotador
         });
     }

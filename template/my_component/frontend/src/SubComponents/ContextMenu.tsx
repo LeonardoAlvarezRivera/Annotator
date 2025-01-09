@@ -222,12 +222,12 @@ const ContextMenu:FC<ContextMenuProps> = ({x,y,displayValue, xTranslate, yTransl
                         <li className="context-submenu-item context-submenu-default-cursor">
                             <span>{getFieldName(annotation.firstEntityId,annotation.fieldsFirstEntity!,0)} <Sell className="context-menu-item-icon"></Sell></span>
                             <ArrowForwardIos className="context-menu-item-arrow"></ArrowForwardIos>
-                            <ContextMenu_EntityFields entities={entities} entityId={annotation.firstEntityId} fieldIndex={0} fieldSelected={0} annotation={annotation} annotationList={annotationList} closeContextMenu={closeContextMenu}/>
+                            <ContextMenu_EntityFields entities={entities} entityId={annotation.firstEntityId} fieldIndex={0} fieldSelected={0} annotation={annotation} annotationList={annotationList} closeContextMenu={closeContextMenu} refreshData={refreshData}/>
                         </li>
                         <li className="context-submenu-item context-submenu-default-cursor context-menu-line">
                             <span>{getFieldName(annotation.firstEntityId,annotation.fieldsFirstEntity!,1)} <Sell className="context-menu-item-icon"></Sell></span>
                             <ArrowForwardIos className="context-menu-item-arrow"></ArrowForwardIos>
-                            <ContextMenu_EntityFields entities={entities} entityId={annotation.firstEntityId} fieldIndex={1} fieldSelected={0} annotation={annotation} annotationList={annotationList} closeContextMenu={closeContextMenu}/>
+                            <ContextMenu_EntityFields entities={entities} entityId={annotation.firstEntityId} fieldIndex={1} fieldSelected={0} annotation={annotation} annotationList={annotationList} closeContextMenu={closeContextMenu} refreshData={refreshData}/>
                         </li>
                         <input autoComplete="off" onChange={(e)=> {handleFilterEntities(e);}} className="context-menu-search-item" placeholder="Search"  id="site-search-second" name="q" />
                         <div className="context-menu-container-options">
@@ -262,14 +262,14 @@ const ContextMenu:FC<ContextMenuProps> = ({x,y,displayValue, xTranslate, yTransl
                         <li className="context-submenu-item">
                             <span>{getFieldName(annotation.secondEntityId,annotation.fieldsSecondEntity!,0)} <Sell className="context-menu-item-icon"></Sell></span>
                             <ArrowForwardIos className="context-menu-item-arrow"></ArrowForwardIos>
-                            <ContextMenu_EntityFields entities={entities} entityId={annotation.secondEntityId} fieldIndex={0} fieldSelected={1} annotation={annotation} annotationList={annotationList} closeContextMenu={closeContextMenu}/>
+                            <ContextMenu_EntityFields entities={entities} entityId={annotation.secondEntityId} fieldIndex={0} fieldSelected={1} annotation={annotation} annotationList={annotationList} closeContextMenu={closeContextMenu} refreshData={refreshData}/>
 
                             
                         </li>
                         <li className="context-submenu-item context-menu-line">
                             <span>{getFieldName(annotation.secondEntityId,annotation.fieldsSecondEntity!,1)} <Sell className="context-menu-item-icon"></Sell></span>
                             <ArrowForwardIos className="context-menu-item-arrow"></ArrowForwardIos>
-                            <ContextMenu_EntityFields entities={entities} entityId={annotation.secondEntityId} fieldIndex={1} fieldSelected={1} annotation={annotation} annotationList={annotationList} closeContextMenu={closeContextMenu}/>
+                            <ContextMenu_EntityFields entities={entities} entityId={annotation.secondEntityId} fieldIndex={1} fieldSelected={1} annotation={annotation} annotationList={annotationList} closeContextMenu={closeContextMenu} refreshData={refreshData}/>
                         </li>
                         <input autoComplete="off" onChange={(e)=> {handleFilterEntities(e);}} className="context-menu-search-item" placeholder="Search"  id="site-search" name="q" />
                         <div className="context-menu-container-options">
