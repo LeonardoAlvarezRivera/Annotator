@@ -67,6 +67,12 @@ iframe[title="my_component.my_component"] {
     align-items: baseline;
 }
 
+.st-emotion-cache-yw8pof {
+    width: 100%;
+    padding: 0rem;
+    max-width: 46rem;
+}
+
 .st-emotion-cache-1ln2a99 {
     gap: 0rem !important;
 }
