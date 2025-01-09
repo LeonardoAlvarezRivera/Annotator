@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 
-import { ArrowForwardIos, Sell, TextFields } from "@mui/icons-material";
+import { ArrowForwardIos, DeleteForever, DeleteForeverOutlined, Sell, TextFields} from "@mui/icons-material";
 import { Field } from '../objects/Field.interface';
 import { Entity } from "../objects/Entity.interface";
 import { Annotation } from '../objects/Annotation.interface';
@@ -21,13 +21,14 @@ interface ContextMenuProps {
     yTranslate:string|undefined
     closeContextMenu: () => void
     showAnnotations: ()=> void
+    refreshData: () => void
     entities: Entity[],
     annotation:Annotation,
     annotationsSelected:Annotation[],
     annotationList:Annotation[]
 }
 
-const ContextMenu:FC<ContextMenuProps> = ({x,y,displayValue, xTranslate, yTranslate, closeContextMenu, showAnnotations, entities, annotationList, annotation, annotationsSelected}) => {
+const ContextMenu:FC<ContextMenuProps> = ({x,y,displayValue, xTranslate, yTranslate, closeContextMenu, showAnnotations, refreshData, entities, annotationList, annotation, annotationsSelected}) => {
  
    
 
@@ -43,6 +44,30 @@ const ContextMenu:FC<ContextMenuProps> = ({x,y,displayValue, xTranslate, yTransl
 
     function handleFilterEntities(e:any){
         setFilterEntities(e.target.value);
+    }
+
+    function clearEntity(entityIndex:number){
+        annotationsToSave = [];
+        annotationsToSave = annotationList.filter((tmpAnnotation) => basicFormatString(tmpAnnotation.text) === basicFormatString(annotation.text));
+        if(annotationsToSave.length > 0){
+            if(entityIndex === 0 ){
+                annotationsToSave.forEach(annSelected => {
+                    annSelected.firstEntityId =  -1;
+                    annSelected.firstEntityCode = '';
+                    annSelected.fieldsFirstEntity =  [];
+                });
+            }
+            else
+            {
+                annotationsToSave.forEach(annSelected => {
+                    annSelected.secondEntityId =  -1;
+                    annSelected.secondEntityCode = '';
+                    annSelected.fieldsSecondEntity =  [];
+                });
+            }
+            updateBulkAnnotations();
+        }
+        closeContextMenu();
     }
 
     function deleteBulkAnnotations()
@@ -74,7 +99,7 @@ const ContextMenu:FC<ContextMenuProps> = ({x,y,displayValue, xTranslate, yTransl
     {
         var result = _annotationsService.updateBulk(annotationsToSave);
         result.then(result => {
-            showAnnotations();
+            refreshData();
             //comunicar con el componente de anotador
         });
     }
@@ -182,14 +207,18 @@ const ContextMenu:FC<ContextMenuProps> = ({x,y,displayValue, xTranslate, yTransl
                 :undefined
         }>
             <li  className="context-menu-item context-menu-label context-menu-line"><span>{getAnnTextToShow(annotationsSelected)}</span> <TextFields className="context-menu-item-icon"></TextFields></li>
-            <li onClick={deleteBulkAnnotations} className="context-menu-item context-menu-label context-menu-line"><span>Delete All Annotations</span> <TextFields className="context-menu-item-icon"></TextFields></li>
-            <li onClick={deleteUniqueAnnotation} className="context-menu-item context-menu-label context-menu-line"><span>Delete this</span> <TextFields className="context-menu-item-icon"></TextFields></li>
+            <li onClick={deleteBulkAnnotations} className="context-menu-item context-menu-label context-menu-line"><span>Delete All Annotations</span> <DeleteForever className="context-menu-item-icon"></DeleteForever></li>
+            <li onClick={deleteUniqueAnnotation} className="context-menu-item context-menu-label context-menu-line"><span>Delete this</span> <DeleteForever className="context-menu-item-icon"></DeleteForever></li>
 
             {
                 <li className="context-menu-item">
                     <span>{getEntityName(annotation.firstEntityId)}<ArrowForwardIos className="context-menu-item-arrow"></ArrowForwardIos></span>
 
                     <ul className="context-submenu">
+                        <li className="context-submenu-item context-submenu-default-cursor" onClick={(e) => {e.stopPropagation(); clearEntity(0);}}>
+                            <span> Clear <DeleteForeverOutlined className="context-menu-item-icon"></DeleteForeverOutlined></span>
+               
+                        </li>
                         <li className="context-submenu-item context-submenu-default-cursor">
                             <span>{getFieldName(annotation.firstEntityId,annotation.fieldsFirstEntity!,0)} <Sell className="context-menu-item-icon"></Sell></span>
                             <ArrowForwardIos className="context-menu-item-arrow"></ArrowForwardIos>
@@ -225,6 +254,11 @@ const ContextMenu:FC<ContextMenuProps> = ({x,y,displayValue, xTranslate, yTransl
                 <li className="context-menu-item">
                     <span>{getEntityName(annotation.secondEntityId)} <ArrowForwardIos className="context-menu-item-arrow"></ArrowForwardIos></span>
                     <ul className="context-submenu">
+                        <li className="context-submenu-item" onClick={(e) => {e.stopPropagation(); clearEntity(1);}}>
+                            <span>Clear<DeleteForeverOutlined className="context-menu-item-icon"></DeleteForeverOutlined></span>
+
+                            
+                        </li>
                         <li className="context-submenu-item">
                             <span>{getFieldName(annotation.secondEntityId,annotation.fieldsSecondEntity!,0)} <Sell className="context-menu-item-icon"></Sell></span>
                             <ArrowForwardIos className="context-menu-item-arrow"></ArrowForwardIos>

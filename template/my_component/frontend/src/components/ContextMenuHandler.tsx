@@ -10,7 +10,8 @@ export type ContextMenuProps = {
     AnnotationList:Annotation[],
     tagSelected: boolean,
     showAnnotations: () => void,
-    handleNewDocument: (e:any) => void
+    handleNewDocument: (e:any) => void,
+    refreshData: () => void
 }
 
 
@@ -158,7 +159,7 @@ export default function CorpusComponent(props:ContextMenuProps){
                 <div id="area-corpus-separator" className="separator"></div>
                 </div>
                 <div id="document-container"  onScroll={(e:any) => handleScrollCorpus(e)} onMouseOver={(e:any) => handleOverCorpus(e)} onMouseOut={(e:any) => handleOutCorpus(e)} className="area-corpus-content"></div>
-                {contextMenu !== null && <ContextMenu x={contextMenu.x} y={contextMenu.y} displayValue={contextMenu.show} xTranslate={contextMenu.xTranslate} yTranslate={contextMenu.yTranslate} closeContextMenu={handleCloseContextMenu} showAnnotations={props.showAnnotations} entities={entityList} annotation = {props.Annotation} annotationsSelected={props.AnnotationsSelected} annotationList={props.AnnotationList}/>}
+                {contextMenu !== null && <ContextMenu x={contextMenu.x} y={contextMenu.y} displayValue={contextMenu.show} xTranslate={contextMenu.xTranslate} yTranslate={contextMenu.yTranslate} closeContextMenu={handleCloseContextMenu} showAnnotations={props.showAnnotations} refreshData={props.refreshData} entities={entityList} annotation = {props.Annotation} annotationsSelected={props.AnnotationsSelected} annotationList={props.AnnotationList}/>}
             </div>
         </div>
     );

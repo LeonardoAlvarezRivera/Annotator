@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Checkbox } from "@mui/material";
 import { Annotation } from "../objects/Annotation.interface";
 import { Entity } from "../objects/Entity.interface";
@@ -12,8 +12,6 @@ import { FileParser } from "../tools/FileParser";
 import { Field } from "../objects/Field.interface";
 import { basicFormatString, convertStringToDOM, findNewAnnotationsInText, readBinaryContent } from "../tools/Utils";
 import { ComunicationService } from "../notifications/comunication.service";
-import { bind } from "@react-rxjs/core";
-import { map } from "rxjs/operators";
 
 
 
@@ -83,7 +81,7 @@ class Anotator extends React.Component<Props>{
 
     constructor(props:Props){
         super(props);
-        if(this.entityList.length == 0)
+        if(this.entityList.length === 0)
         {
             this.loadEntities();
         }
@@ -99,6 +97,7 @@ class Anotator extends React.Component<Props>{
 
         document.addEventListener('mouseup', e => {
             e.stopPropagation();
+            //e.stopImmediatePropagation();
 
             if(this.handleGetIsOverCorpus()){
                 this.textSelection();
@@ -137,7 +136,7 @@ class Anotator extends React.Component<Props>{
             this.updateEntitySelected();
             //Guardo las nuevas anotaciones    
            
-            var result = this._annotationsService.addBulk(this._AnnotationsSelectedList);
+           var result = this._annotationsService.addBulk(this._AnnotationsSelectedList);
             result.then(result => {
 
                 //muestro las nuevas anotaciones
@@ -145,6 +144,7 @@ class Anotator extends React.Component<Props>{
                 this._tmpAnotationSelected.text = "";
                 this.showDocumentWithAnnotations();
             });
+            
         }
     }
 
@@ -249,12 +249,12 @@ class Anotator extends React.Component<Props>{
     setFirstField = (e:any, entitySelected:number) => {
         var fieldCodes:string[]|undefined = [];
 
-        if(entitySelected == 1)
+        if(entitySelected === 1)
         fieldCodes = this._tmpAnotationSelected.fieldsFirstEntity;
-        if(entitySelected == 2)
+        if(entitySelected === 2)
         fieldCodes = this._tmpAnotationSelected.fieldsSecondEntity;
 
-        if(fieldCodes == undefined)
+        if(fieldCodes === undefined)
             fieldCodes = [];
 
         if(e.target.value !== '-1')
@@ -262,7 +262,7 @@ class Anotator extends React.Component<Props>{
             if(fieldCodes.length >= 1 && fieldCodes)
                 fieldCodes[0] = e.target.value;
 
-            if(fieldCodes.length == 0 && fieldCodes)
+            if(fieldCodes.length === 0 && fieldCodes)
                 fieldCodes.push(e.target.value);
         }
         else
@@ -277,21 +277,21 @@ class Anotator extends React.Component<Props>{
     setSecondField = (e:any, entitySelected:number) => {
         var fieldCodes:string[]|undefined = [];
         
-        if(entitySelected == 1)
+        if(entitySelected === 1)
         fieldCodes = this._tmpAnotationSelected.fieldsFirstEntity;
-        if(entitySelected == 2)
+        if(entitySelected === 2)
         fieldCodes = this._tmpAnotationSelected.fieldsSecondEntity;
 
-        if(fieldCodes == undefined)
+        if(fieldCodes === undefined)
             fieldCodes = [];
         if(e.target.value !== '-1')
         {
-            if(fieldCodes.length == 2 && fieldCodes)
+            if(fieldCodes.length === 2 && fieldCodes)
                 fieldCodes[1] = e.target.value;
 
-            if(fieldCodes.length == 1 && fieldCodes)
+            if(fieldCodes.length === 1 && fieldCodes)
                 fieldCodes.push(e.target.value);
-        }else if(fieldCodes.length == 2)
+        }else if(fieldCodes.length === 2)
         {
             fieldCodes.pop();
         }
@@ -307,7 +307,7 @@ class Anotator extends React.Component<Props>{
         this.entityFields = [];
 
         this.entityList.forEach((entity) => {
-            let fieldsSelected: Field[] = entity.FieldList!.filter((field) => field.selected == true);
+            let fieldsSelected: Field[] = entity.FieldList!.filter((field) => field.selected === true);
             let fieldsCodes:string [] = fieldsSelected.map((field) => field.code);
             fieldsCodes.forEach((fieldsCode) => this.entityFields.push(fieldsCode));
         });
@@ -322,7 +322,7 @@ class Anotator extends React.Component<Props>{
      handleCheckSemiSelected = (entity: Entity):boolean => {
         let isSemiSelected: boolean = false;
         let selectedValues = entity.FieldList!.map(field => field.selected);
-        let numberOfTrue = selectedValues.filter((value) => value == true).length;
+        let numberOfTrue = selectedValues.filter((value) => value === true).length;
         if(numberOfTrue > 0 && numberOfTrue < entity.FieldList!.length)
             isSemiSelected = true;
         return isSemiSelected;
@@ -416,6 +416,8 @@ class Anotator extends React.Component<Props>{
                 return ann.status === 'Draft';
             });
 
+            this.refreshCurrentAnnotation();
+
             this._AnnotationsSelectedList = draftAnnotations;
             var corpusText = convertStringToDOM(corpus_section,this.textPlain,this._AnnotationsSelectedList, annFilterByFields, this.entityList);
             corpus_section.innerHTML = "";
@@ -423,7 +425,7 @@ class Anotator extends React.Component<Props>{
             const annotationsSpans = Array.from(document.getElementsByClassName('annotated-content'));
             annotationsSpans.forEach(span => {
                 span.addEventListener('click', (event:any) => {
-                    event.stopImmediatePropagation();
+                    
                 
                      this.isTagSelected = true;
                     
@@ -441,7 +443,6 @@ class Anotator extends React.Component<Props>{
                                     this._AnnotationSelected = annotation;
                                     this._AnnotationsSelectedList = this._annotationsList.filter((tmpAnnotation) => basicFormatString(tmpAnnotation.text) === basicFormatString(this._tmpAnotationSelected.text));
                                     this.showDocumentWithAnnotations();
-                                    console.log(annotation);
                                     
                                 }     
                             });
@@ -454,10 +455,29 @@ class Anotator extends React.Component<Props>{
                   });
             });
             
+            
+
             this.handleSetScrollCorpus(corpus_section);
         });
         
     }
+
+    refreshCurrentAnnotation = () => {
+        if(this._tmpAnotationSelected.id){
+         
+            this._annotationsService.get(this._tmpAnotationSelected.id).then(annotation => {
+                if(annotation){
+                    this.handleFirstEntitySelected(annotation.firstEntityId);
+                    this.handleSecondEntitySelected(annotation.secondEntityId);
+                    this._tmpAnotationSelected = annotation;
+                    this._AnnotationSelected = annotation;  
+
+                }   
+                
+                this.showDocumentWithAnnotations();
+            });
+        }
+    };
 
     handleShowAnnotations = () => this.showDocumentWithAnnotations();
 
@@ -485,7 +505,7 @@ class Anotator extends React.Component<Props>{
         var page_content = document.getElementById('document-container')!.innerText;
         var sel = window.getSelection()!;
        
-        if(sel.rangeCount != 0)
+        if(sel.rangeCount !== 0)
         {
             var range = sel.getRangeAt(0).cloneRange();
             var markerTextChar = range.cloneContents()!;
@@ -499,10 +519,7 @@ class Anotator extends React.Component<Props>{
                 this._tmpAnotationSelected.end = selectedIndex + markerTextChar.textContent!.length;
                 this._tmpAnotationSelected.documentId = this._currentDocument?.id!;
 
-                console.log('Nueva anotacion');
                 this.searchAnnotationMatches();
-
-            
             }
             else
             {
@@ -535,7 +552,7 @@ class Anotator extends React.Component<Props>{
         var entityInfo:Entity|undefined = undefined;
         if(this.entityList.length> 0)
         {
-            entityInfo = this.entityList.find(entity => entity.id == entityId);
+            entityInfo = this.entityList.find(entity => entity.id === entityId);
         }
         return entityInfo;
     }
@@ -639,7 +656,7 @@ class Anotator extends React.Component<Props>{
         </div>
         <div className="area-container">
             
-            <CorpusComponent Entities={this.entityList} Annotation={this._tmpAnotationSelected} tagSelected={this.isTagSelected} AnnotationList={this._annotationsList} AnnotationsSelected={this._AnnotationsSelectedList} showAnnotations={this.handleShowAnnotations} handleNewDocument={this.handleFileChange}/>
+            <CorpusComponent Entities={this.entityList} refreshData={this.refreshCurrentAnnotation} Annotation={this._tmpAnotationSelected} tagSelected={this.isTagSelected} AnnotationList={this._annotationsList} AnnotationsSelected={this._AnnotationsSelectedList} showAnnotations={this.handleShowAnnotations} handleNewDocument={this.handleFileChange}/>
             <div id="Table" className="area-table area-tool">
                  
             </div>
