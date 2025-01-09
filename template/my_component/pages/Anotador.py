@@ -75,6 +75,12 @@ iframe[title="my_component.my_component"] {
     -webkit-box-align: center;
     align-items: baseline;
 }
+
+.st-emotion-cache-yw8pof {
+    width: 100%;
+    padding: 0rem;
+    max-width: 46rem;
+}
 <style>
 """
 
