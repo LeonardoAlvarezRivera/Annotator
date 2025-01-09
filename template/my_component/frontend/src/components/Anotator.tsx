@@ -416,7 +416,7 @@ class Anotator extends React.Component<Props>{
                 return ann.status === 'Draft';
             });
 
-            this.refreshCurrentAnnotation();
+            //this.refreshCurrentAnnotation();
 
             this._AnnotationsSelectedList = draftAnnotations;
             var corpusText = convertStringToDOM(corpus_section,this.textPlain,this._AnnotationsSelectedList, annFilterByFields, this.entityList);
