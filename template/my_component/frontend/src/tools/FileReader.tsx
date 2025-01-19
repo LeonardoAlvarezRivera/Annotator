@@ -46,7 +46,7 @@ export const ParseEntitiesCSV = (csvContent:string):any => {
 
         if(entityFound !== undefined && fieldInfo[2] !== '' && fieldInfo[2] !== undefined)
         {
-            let newField = CreateNewField(fieldInfo[2], entityFound.FieldList!.length.toString(), entityFound.Code);
+            let newField = CreateNewField(index+1,fieldInfo[2], entityFound.FieldList!.length.toString(), entityFound.Code);
             entityFound.FieldList!.push(newField);
 
             entityFound.Fields += 1;
@@ -58,12 +58,12 @@ export const ParseEntitiesCSV = (csvContent:string):any => {
             let newEntity = CreateNewEntity(fieldInfo, entityList.length);
             entityList.push(newEntity);
 
-            let emptyField = CreateNewField('Without Fields',newEntity.FieldList!.length.toString(), newEntity.Code);
+            let emptyField = CreateNewField(0,'Without Fields',newEntity.FieldList!.length.toString(), newEntity.Code);
             newEntity.FieldList!.push(emptyField);
 
             newEntity.Fields += 1;
 
-            let newField = CreateNewField(fieldInfo[2],newEntity.FieldList!.length.toString(), newEntity.Code);
+            let newField = CreateNewField(index +1,fieldInfo[2],newEntity.FieldList!.length.toString(), newEntity.Code);
             newEntity.FieldList!.push(newField);
 
             newEntity.Fields += 1;
@@ -94,7 +94,7 @@ export const NewEntity = (name:string, entityList:Entity[]):Entity => {
     let tmpEntityList:Entity[] =[]; 
     let newEntity:Entity = CreateNewEntity(['','','','e_'+entityList.length,name], entityList.length);
     entityList.forEach((entity) => { tmpEntityList.push(entity); });
-    newEntity.FieldList!.push(CreateNewField('Without Fields',newEntity.FieldList!.length.toString(), newEntity.Code))
+    newEntity.FieldList!.push(CreateNewField(0,'Without Fields',newEntity.FieldList!.length.toString(), newEntity.Code))
     newEntity.Fields = newEntity.FieldList!.length;
     tmpEntityList.push(newEntity);
 
@@ -103,8 +103,9 @@ export const NewEntity = (name:string, entityList:Entity[]):Entity => {
 
 
 
-const CreateNewField = (name:string, code: string,entityCode:string):Field => {
+const CreateNewField = (id:number,name:string, code: string,entityCode:string):Field => {
     let newField:Field = {
+        id: id,
         code:(name === 'Without Fields')? 'f_WOF_'+entityCode.split('_')[1]+code: 'f_'+entityCode.split('_')[1]+code, 
         name: name,
         selected: true
@@ -118,7 +119,9 @@ export const NewField = (fieldName:string, entityList:Entity[], entitySelected:E
         if(entity.Code == entitySelected.Code)
         {
             let fieldFound = entity.FieldList!.find((field) => field.name == fieldName);
-            if(!fieldFound) entity.FieldList!.push(CreateNewField(fieldName,entity.FieldList!.length.toString(), entity.Code));
+            var newField = CreateNewField(entity.FieldList!.length + 1, fieldName,entity.FieldList!.length.toString(), entity.Code);
+
+            if(!fieldFound) entity.FieldList! =  [...entity.FieldList!, newField]; //entity.FieldList!.push(newField);
         }
         entity.Fields = entity.FieldList!.length;
         tmpEntityList.push(entity); 

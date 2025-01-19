@@ -156,7 +156,7 @@
 
   .input-entity-add{
     margin-right: 10px;
-    width: 180px;
+    width: 280px;
     padding: 5px;
     border-radius: 5px;
     border: 1px solid var(--sea-blue);
@@ -210,6 +210,7 @@
     color: #fff;
     background-color: var(--sea-blue);
     border-radius: 6px;
+    width: 200px;
 }
 
 .inputfile-1:focus + label,
@@ -802,7 +803,7 @@
   .area-entities-header-content{
     display: flex;
     padding-top: 11px;
-    padding-left: 40px;
+    padding-left: 10px;
     height: var(--window-heigth-entities-header);
     width: 100%;
   }
@@ -830,32 +831,30 @@
   .area-entities-inputs{
     margin-top: 10px;
     margin-bottom: 10px;
-    height: 100px;
-    width: 50%;
-    display: inline-flex;
+    height: fit-content;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    position: relative;
     padding-left: 50px;
     padding-right: 50px;
   }
 
   .area-entities-manual{
-    height: 100%;
+    height: fit-content;
     width: 50%;
-    display: flex;
-    padding: 20px;
-    align-items: center;
-    align-content: center;
-    justify-content: left;
+    position: absolute;
+    right: 0;
+    bottom: 0;
   }
 
   .area-entities-import{
-    height: 100%;
-    width: 50%;
-    display: flex;
+    height: fit-content;
+    width: fit-content;
     padding: 20px;
-    align-items: center;
-    align-content: center;
-    justify-content: center;
-
+    position: absolute;
+    left: 0;
+    top: -20px;
   }
 
   .area-entity-container{
@@ -876,7 +875,7 @@
   }
 
   .area-entity-manager-list{
-    width: 50%;
+    width: 100%;
     height:calc(100vh - var(--window-heigth-corpus-header) - 200px);
     overflow-y: scroll;
     overflow-x: scroll;
@@ -884,10 +883,20 @@
 
   .area-entity-item-list{
     padding: 20px;
-    width: 50%;
+    width: 100%;
+    position: relative;
     height:calc(100vh - var(--window-heigth-corpus-header) - 200px);
     overflow-y: scroll;
     overflow-x: scroll;
+  }
+
+  .entity-selected-back{
+    color: #739CED;
+    cursor: pointer;
+  }
+
+  .entity-selected-back:hover{
+    color: #5e89df;
   }
 
   .entity-selected-data{
@@ -918,6 +927,49 @@
     font-weight:bold;
     font-style:normal;
     height: 100%;
+  }
+
+  .entity-selected-buttons{
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+    right: 50px;
+    margin-bottom: 30px;
+  }
+
+  .entity-selected-fields-title{
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 30px;
+    border-top: 1px solid #d3d0d0;
+    font-size: 26px;
+    font-family: sans-serif;
+    color: #726e6e;
+    padding-top: 10px;
+    margin-top: 20px;
+  }
+
+  .entity-selected-fields-add{
+    width: fit-content;
+    height: fit-content;
+    position:absolute;
+    right: 50px;
+    top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .entity-selected-fields-container{
+    width: 100%;
+    height: fit-content;
+    position: relative;
+  }
+
+  .entity-selected-information{
+    width: 100%;
+    height: fit-content;
+    margin-bottom: 10px;
   }
 
   .data-field-container{

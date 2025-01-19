@@ -1,19 +1,21 @@
 import { Button } from "@mui/material";
 import { DataGrid, useGridApiRef,GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-import React, { useState } from "react";
+import React, {useState} from "react";
 
 import { Entity } from '../objects/Entity.interface';
 import { Field } from "../objects/Field.interface";
 
-import { getEntityColor, NewEntity, NewField, ParseEntitiesCSV, ReadFileToText } from "../tools/FileReader";
+import {  NewEntity, NewField, ParseEntitiesCSV, ReadFileToText } from "../tools/FileReader";
 import { Props } from "./Anotador";
 import { EntitiesService } from '../services/Entities.service';
-import { Annotation } from "../objects/Annotation.interface";
+import Details from "./EntityDetails";
+
 
 
 
 
 const entityService = new EntitiesService();
+
 
 var entityList: Entity[] = [];
 var entitySelected: Entity = {
@@ -27,101 +29,10 @@ var entitySelected: Entity = {
     selected: true
 };
 
-
-
-const colorList:string[] = ['#d0d176','#e0e096','#f0f0b7','#ffffd7',
-                            '#cf4945','#e16b61','#f18b7e','#ffab9d',
-                            '#55b758','#78cf77','#99e796','#99e796',
-                            '#7dabdf','#a0c6ea','#c1e2f5','#e1ffff',
-                            '#c8a088','#debaa5','#ead1c2','#f5e8e0',
-                            '#98799c','#b398b7','#ccb8ce','#e5d8e6',
-                            '#98c7c7','#b7e7e7','#cff8f8','#e0fbfa',
-                        ];
-
-const columns: GridColDef[] = [
-    {field: 'id'},
-    {field: 'Entity', width: 200},
-    {field: 'Color', width: 100,
-        renderCell: (params: GridRenderCellParams<any, string>) => 
-        (
-            <div className="area-entity-rectangle" style={{background: params.value}}></div>
-        )
-    },
-    {field: 'Fields', width: 100},
-    {field: 'Actions', width: 200,
-        renderCell: (params: GridRenderCellParams<any, number>) => 
-        (
-            <Button onClick={()=>{ var result:Entity|undefined = entityList.find((entity) => entity.id == params.id);
-                if(result){
-                    entitySelected = result;
-                    showEntityInfo();
-                }
-            }}>Edit</Button>
-        )}
-];
-
-const createEntityFields = (entityFields:Field[]) =>{
-    let entityFieldDOMElement = document.getElementById("entity-selected-fields");
-    if (entityFieldDOMElement){
-        entityFieldDOMElement.innerHTML = '';
-        entityFields.forEach((field) =>{
-            let fieldContainer =  document.createElement('div');
-            fieldContainer.setAttribute("class", "entity-rounded-pill");
-            
-            let fieldData = document.createElement('div');
-            fieldData.setAttribute("class", "entity-field-name");
-            fieldData.innerHTML = field.name;
-
-            fieldContainer.append(fieldData);
-            
-            entityFieldDOMElement?.append(fieldContainer);
-        }); 
- 
-    } 
-
-};
-
-const showEntityInfo = () =>
-{
-    if(validateExistsEntities())
-    {
-        let name = document.getElementById("entityName");
-        if (name) name.innerHTML = entitySelected.Entity;
-    
-        let color = document.getElementById("entityColor");
-        if (color) color.style.background = entitySelected.Color;
-    
-        let colorHEX = document.getElementById("entityColorHEX");
-        if (colorHEX) colorHEX.innerHTML = entitySelected.Color;
-    
-        createEntityFields(entitySelected.FieldList!);
-    }
-};
-
-const validateExistsEntities = ():boolean =>
-{
-    let entityListEmptyDOMElement = document.getElementById("entityEmptyList");
-    let entityListDOMElement = document.getElementById("entityItemList");
-
-    if(entityList.length == 0){
-        if(entityListDOMElement && entityListEmptyDOMElement)
-        {
-            entityListDOMElement.style.display = "none";
-            entityListEmptyDOMElement.style.display = "block";
-        }
-        return false;
-    }
-    else{
-        if(entityListDOMElement && entityListEmptyDOMElement)
-        {
-            entityListDOMElement.style.display = "block";
-            entityListEmptyDOMElement.style.display = "none";
-        }
-        return true;
-    }
-};
-
 export default function EntitiesManager(props:Props){
+
+    const [page, setPage] = useState("entities");
+    const [entityId, setEntityId] = useState(entitySelected);
         const apiRef = useGridApiRef();
         entitySelected = {
             id: 0,
@@ -134,8 +45,41 @@ export default function EntitiesManager(props:Props){
             selected: true
         };
 
+        const columns: GridColDef[] = [
+            {field: 'id'},
+            {field: 'Code', minWidth: 100},
+            {field: 'Entity', flex: 1, minWidth: 200},
+            {field: 'Color', minWidth: 100,
+                renderCell: (params: GridRenderCellParams<any, string>) => 
+                (
+                    <div className="area-entity-rectangle" style={{background: params.value}}></div>
+                )
+            },
+            {field: 'Fields', minWidth: 100},
+            {field: 'Actions', flex: 0.3, minWidth: 200,
+                renderCell: (params: GridRenderCellParams<any, number>) => 
+                (
+                    <Button onClick={()=>{ var result:Entity|undefined = entityList.find((entity) => entity.id == params.id);
+                        if(result){
+                            entitySelected = result;
+                            SetFieldsId();
+                            setEntityId(entitySelected);
+                            setPage("details");
+                        }
+                    }}>Edit</Button>
+                )}
+        ];
+
+        const SetFieldsId = () => {
+
+            entitySelected.FieldList!.forEach((field, index) => {
+                if(!field.id)
+                {
+                    field.id = index + 1;
+                }
+            });
+        };
         const updateDataGrid = () => {
-            showEntityInfo();
             apiRef.current.setRows(entityList);              
         };
 
@@ -155,16 +99,10 @@ export default function EntitiesManager(props:Props){
         
         }
 
-        const handleUpdateEntity=  (e:any) => {
-            apiRef.current.updateRows([{id: entitySelected.id, Color: e.target.value}]);
-            var entity =  entityList.find((entity) => entitySelected.id == entity.id);
-            if(entity) {
-                entity.Color = e.target.value;
-                entityService.update(entity).then(res => {
-                    handleLoadEntities(entity!.id!);
-                });
-            }
-            showEntityInfo();
+        const handleBackHome=  () => {
+            setPage("entities");
+            handleLoadEntities(0);
+            
         }
 
         const handleAddEntity = (e:any) => {
@@ -187,26 +125,6 @@ export default function EntitiesManager(props:Props){
             });
           };
 
-        const handleAddField = (e:any) => {
-            // Prevent the browser from reloading the page
-            e.preventDefault();
-
-            // Read the form data
-            const form = e.target;
-            const formData = new FormData(form);
-
-            // You can pass formData as a fetch body directly:
-            fetch('/some-api', { method: form.method, body: formData });
-
-            // Or you can work with it as a plain object:
-            const formJson = Object.fromEntries(formData.entries());
-            
-            entityList = NewField(formJson.fieldName.toString(), entityList, entitySelected);
-            let tmpEntitySelected = entityList.find((entity) => entity.id == entitySelected.id);
-            if(tmpEntitySelected) entitySelected = tmpEntitySelected;
-         
-            updateDataGrid();
-          };
 
         const handleFileChange = async (e:any) => {
             // Check if user has entered the file
@@ -224,7 +142,6 @@ export default function EntitiesManager(props:Props){
         if(props.EntityList){
             entityList = props.EntityList;
             entitySelected = entityList[0];
-            showEntityInfo();
         }else{
             handleLoadEntities(0);
         }
@@ -233,10 +150,15 @@ export default function EntitiesManager(props:Props){
             <div className="area-tool-container">
                 <div className="area-entities-header">
                 <div className="area-entities-header-content">
-                    <i className="area-entities-title">Entities Manager</i>
+                     { page === "entities" && <i className="area-entities-title">Entities Manager</i>}
+                     { page === "details" &&
+                                <div  className="entity-selected-data-name"><span className="entity-selected-back" onClick={handleBackHome}>Entity List </span><span> / {entitySelected.Entity}</span></div>
+                     }
                 </div>
                     <div id="area-corpus-separator" className="separator"></div>
                 </div>
+
+                {page === "entities" &&
                 <div className="area-entities-content">
                     <div className="area-entities-inputs">
                         <div className="area-entities-manual">
@@ -264,51 +186,12 @@ export default function EntitiesManager(props:Props){
                         <div className="area-entity-manager-list">
                             <DataGrid apiRef={apiRef} rows={entityList} columns={columns} ></DataGrid>
                         </div>
-                        <div id="entityEmptyList">
-                            Without Entities please add some record to use Anotador Tool.
-                        </div>
-                        <div id="entityItemList" className="area-entity-item-list" style={{display: "none"}}>
-                            <div  className="entity-selected-data-name"><span id="entityName"></span></div>
-                            <div  className="entity-container-selected-color">
-                                    <div className="entity-color-data">
-                                        <div className="data-field-container">
-                                            <div className="entity-selected-data"><span className="entity-selected-info">Color:</span></div>
-                                            <div id="entityColor" className="area-entity-rectangle" style={{background: entitySelected.Color}}></div>
-                                        </div>
-                                        <div className="data-field-container">
-                                            <div className="entity-selected-data"><span className="entity-selected-info">HEX:</span></div>
-                                            <div id="entityColorHEX" className="entity-selected-data">{entitySelected.Color}</div>
-                                        </div>
-                                    </div>
-                                    <div  id="entity-color-list" className="entity-color-list">
-                                    {
-                                        colorList.map((item,index) => (
-                                            <input key={'key_color_'+index} type="button" value={item} onClick={handleUpdateEntity} className="entity-color-item" style={{background: item}}></input>
-                                        ))
-                                    }
-                                </div>
-                            </div>
-                            
-                            <form method="post" onSubmit={handleAddField}>
-                                <input id="new-field-name" name="fieldName" type="text" placeholder="New Field"  className="input-entity-add"/>
-                                <button type="submit" className="button-standard button-standard-success ">Add Field</button>
-                            </form>
-                       
-                            <div  id="entity-selected-fields" className="entity-selected-fields">
-
-                                {
-                                    entitySelected.FieldList!.map((field, index) => (
-                                        <div key={'key_field_'+index} className="entity-rounded-pill">
-                                            <div className="entity-field-name">{field.name}</div>
-                                            <div className="entity-field-name"></div>
-                                        </div>
-                                    ))
-                                }
-                            </div>
-                            
-                        </div>
                     </div>
                 </div>
+                }
+                {
+                    page === "details" && <Details EntitySelected={entityId} EntityList={entityList} backHomeScreen={handleBackHome}/>
+                }
             </div>
         );
 };
