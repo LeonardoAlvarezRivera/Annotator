@@ -110,44 +110,46 @@ export default function Details (props:EntityDetailsProps)  {
 
     
     return (
-
-    <div className="area-entity-container">
-
+    <div  className="area-entities-content">
         
-        <div id="entityItemList" className="area-entity-item-list">
-        <form  method="post" onSubmit={handleSaveChanges}>
-            <div className="entity-selected-buttons">
-                <Button type="submit" variant="contained" color="success">save</Button>
-            </div>
 
-            <div className="entity-selected-information">
-                    <input id="new-field-name" name="entityName" type="text" placeholder="Entity Name"  className="input-entity-add"/>
-                    <input type="color" value={color} onChange={e => setColor(e.target.value)} />
-            </div>
-            </form>
+                <div id="entityItemList" className="area-entity-item-list">
+                    <form  method="post" onSubmit={handleSaveChanges}>
+                    <div className="entity-selected-buttons">
+                        <Button type="submit" variant="contained" color="success">save</Button>
+                    </div>
 
-            <div className="entity-selected-fields-container">
-                <div className="entity-selected-fields-title">
-                    List of fields
-                </div>
-
-                <div className="entity-selected-fields-add">
-                    <form  method="post" onSubmit={handleAddField}>
-                        <input id="new-field-name" name="fieldName" type="text" placeholder="New Field"  className="input-entity-add"/>
-                        <Button type="submit" variant="contained" color="primary">Add Field</Button>
+                    <div className="entity-selected-information">
+                            <input id="new-field-name" name="entityName" type="text" placeholder="Entity Name"  className="input-entity-add"/>
+                            <input type="color" value={color} onChange={e => setColor(e.target.value)} />
+                    </div>
                     </form>
+                    <div className="entity-selected-fields-container">
+                        <div className="entity-selected-fields-title">
+                            List of fields
+                        </div>
+
+                        <div className="entity-selected-fields-add">
+                            <form  method="post" onSubmit={handleAddField}>
+                                <input id="new-field-name" name="fieldName" type="text" placeholder="New Field"  className="input-entity-add"/>
+                                <Button type="submit" variant="contained" color="primary">Add Field</Button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        
-            <div className="area-entity-container">
-                <div className="area-entity-manager-list">
-                    <DataGrid apiRef={apiRef} rows={entityFields} columns={columns} ></DataGrid>
-                </div>
-            </div>
-            
-            
-        </div>
+                <div className="area-entity-container">
+                    <div className="area-entity-manager-list">
+                        <DataGrid apiRef={apiRef} rows={entityFields} columns={columns} ></DataGrid>
+                    </div>
+                </div>     
+       
+
+
+     
     </div>
+
+
+   
       
     )
 }
