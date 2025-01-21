@@ -152,7 +152,7 @@ export default function EntitiesManager(props:Props){
                 <div className="area-entities-header-content">
                      { page === "entities" && <i className="area-entities-title">Entities Manager</i>}
                      { page === "details" &&
-                                <div  className="entity-selected-data-name"><span className="entity-selected-back" onClick={handleBackHome}>Entity List </span><span> / {entitySelected.Entity}</span></div>
+                                <div  className="entity-selected-data-name"><span className="entity-selected-back" onClick={handleBackHome}>Entity List </span><span> / {entityId.Entity}</span></div>
                      }
                 </div>
                     <div id="area-corpus-separator" className="separator"></div>
