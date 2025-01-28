@@ -5,9 +5,10 @@ export interface Entity{
     Entity: string;
     Code: string;
     Color: string;
-    Fields: number,
-    FieldList?: Field[],
-    Actions: number
+    Fields: number;
+    FieldList?: Field[];
+    Actions: number;
     selected: boolean;
+    projectId : number;
 }
 
