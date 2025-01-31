@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, DialogContentText } from "@mui/material";
 import { DataGrid, useGridApiRef,GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import React, {useState} from "react";
 
@@ -9,12 +9,15 @@ import {  NewEntity, NewField, ParseEntitiesCSV, ReadFileToText } from "../tools
 import { Props } from "./Anotador";
 import { EntitiesService } from '../services/Entities.service';
 import Details from "./EntityDetails";
+import { Project } from "../objects/Project.interface";
+import { AnnotationService } from '../services/Annotations.service';
 
 
 
 
 
 const entityService = new EntitiesService();
+const annotationService = new AnnotationService();
 
 
 var entityList: Entity[] = [];
@@ -26,13 +29,20 @@ var entitySelected: Entity = {
     Fields: 3,
     FieldList: [],
     Actions: 0,
-    selected: true
+    selected: true,
+    projectId: 0
+};
+
+var currentProject: Project = {
+    name: "",
+    description: ""
 };
 
 export default function EntitiesManager(props:Props){
-
+    const [open, setOpen] = React.useState(false);
     const [page, setPage] = useState("entities");
     const [entityId, setEntityId] = useState(entitySelected);
+    const [project,setProject] = useState(currentProject);
         const apiRef = useGridApiRef();
         entitySelected = {
             id: 0,
@@ -42,7 +52,8 @@ export default function EntitiesManager(props:Props){
             Fields: 3,
             FieldList: [],
             Actions: 0,
-            selected: true
+            selected: true,
+            projectId:0
         };
 
         const columns: GridColDef[] = [
@@ -59,14 +70,25 @@ export default function EntitiesManager(props:Props){
             {field: 'Actions', flex: 0.3, minWidth: 200,
                 renderCell: (params: GridRenderCellParams<any, number>) => 
                 (
-                    <Button onClick={()=>{ var result:Entity|undefined = entityList.find((entity) => entity.id == params.id);
-                        if(result){
-                            entitySelected = result;
-                            SetFieldsId();
-                            setEntityId(entitySelected);
-                            setPage("details");
-                        }
-                    }}>Edit</Button>
+                    <div>
+                        <Button onClick={()=>{ var result:Entity|undefined = entityList.find((entity) => entity.id == params.id);
+                            if(result){
+                                entitySelected = result;
+                                SetFieldsId();
+                                setEntityId(entitySelected);
+                                setPage("details");
+                            }
+                        }}>Edit</Button>
+
+                        <Button onClick={()=>{ var result:Entity|undefined = entityList.find((entity) => entity.id == params.id);
+                            if(result){
+                                entitySelected = result;
+                                setEntityId(entitySelected);
+                                handleClickOpen();
+                            }
+                        }}>Delete</Button>
+                    </div>
+                    
                 )}
         ];
 
@@ -85,7 +107,7 @@ export default function EntitiesManager(props:Props){
 
 
         const handleLoadEntities =  (entityId:number) => {
-            var result = entityService.getList();
+            var result = entityService.getList(props.Project.id!);
             result.then(res =>
                 {
                     const allEntities = res? (res as Entity[]): ([] as Entity[]); 
@@ -108,7 +130,7 @@ export default function EntitiesManager(props:Props){
         const handleAddEntity = (e:any) => {
             // Prevent the browser from reloading the page
             e.preventDefault();
-
+            setProject(props.Project);
             // Read the form data
             const form = e.target;
             const formData = new FormData(form);
@@ -119,7 +141,7 @@ export default function EntitiesManager(props:Props){
             // Or you can work with it as a plain object:
             const formJson = Object.fromEntries(formData.entries());
             
-            var newEntity = NewEntity(formJson.entityName.toString(), entityList);
+            var newEntity = NewEntity(formJson.entityName.toString(), entityList, project.id!);
             entityService.add(newEntity).then(res => {
                 handleLoadEntities(res);
             });
@@ -129,28 +151,69 @@ export default function EntitiesManager(props:Props){
         const handleFileChange = async (e:any) => {
             // Check if user has entered the file
             if (e.target.files.length) {
+                setProject(props.Project);
                 const inputFile = e.target.files[0];
-    
                 var csvContent = await ReadFileToText(inputFile);
-                entityList = ParseEntitiesCSV(csvContent);
+                entityList = ParseEntitiesCSV(csvContent, props.Project.id!);
                 await entityService.addSet(entityList);
 
                 handleLoadEntities(0);
             }
         }
 
-        if(props.EntityList){
-            entityList = props.EntityList;
-            entitySelected = entityList[0];
-        }else{
+        if(props.Project){
             handleLoadEntities(0);
         }
-     
+
+        const handleClickOpen = () => {
+            setOpen(true);
+          };
+        
+          const handleClose = () => {
+            handleLoadEntities(0);
+            setOpen(false);
+          };
         return (
             <div className="area-tool-container">
+                 <Dialog
+                        open={open}
+                        onClose={handleClose}
+                        PaperProps={{
+                        component: 'form',
+                        onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
+                            event.preventDefault();
+                            
+                            annotationService.getAllItems().then(annotations =>{
+                                var annotationsToDelete = annotations.filter(ann => ann.firstEntityId === entityId.id! || ann.secondEntityId === entityId.id!);
+                                var keysToDelete = annotationsToDelete.map(ann => ann.id!);
+                                annotationService.deleteBulk(keysToDelete).then(result => {
+                                    
+                                    entityService.delete(entityId.id!).then(result => {
+
+
+                                        handleClose();
+
+                                    });
+                                });
+                                
+                            });
+                        },
+                        }}
+                    >
+                        <DialogTitle>Delete Entity</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                            Do you want to delete the entity {entityId.Entity} and its related entries? This action cannot be reversed.
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                        <Button onClick={handleClose}>Cancel</Button>
+                        <Button type="submit">Delete</Button>
+                        </DialogActions>
+                    </Dialog>
                 <div className="area-entities-header">
                 <div className="area-entities-header-content">
-                     { page === "entities" && <i className="area-entities-title">Entities Manager</i>}
+                     { page === "entities" && <div  className="entity-selected-data-name"><span className="entity-selected-back" onClick={props.backProjects}>Projects </span><span> / Entity Manager</span></div>}
                      { page === "details" &&
                                 <div  className="entity-selected-data-name"><span className="entity-selected-back" onClick={handleBackHome}>Entity List </span><span> / {entityId.Entity}</span></div>
                      }

@@ -34,7 +34,7 @@ export const ArrayBufferToText = (arrayBuffer: ArrayBuffer):any =>{
     return  new  TextDecoder('utf-8').decode(view);  
 };
 
-export const ParseEntitiesCSV = (csvContent:string):any => {
+export const ParseEntitiesCSV = (csvContent:string, projectId:number):any => {
     const lines = csvContent.split('\n');
     let entityList:Entity[] =[]; 
     let entityString: string[] = [];
@@ -54,8 +54,7 @@ export const ParseEntitiesCSV = (csvContent:string):any => {
         else if(fieldInfo[4] !== '' && fieldInfo[4] !== 'Entity-Name' && fieldInfo[4] !== undefined && fieldInfo[2] !== '' && fieldInfo[2] !== undefined)
         {
             entityString.push(fieldInfo[4]);
-            
-            let newEntity = CreateNewEntity(fieldInfo, entityList.length);
+            let newEntity = CreateNewEntity(fieldInfo, entityList.length, projectId);
             entityList.push(newEntity);
 
             let emptyField = CreateNewField(0,'Without Fields',newEntity.FieldList!.length.toString(), newEntity.Code);
@@ -74,7 +73,7 @@ export const ParseEntitiesCSV = (csvContent:string):any => {
 };
 
 
-const CreateNewEntity = (fieldInfo:string[], Id:number):Entity => {
+const CreateNewEntity = (fieldInfo:string[], Id:number, projectId:number):Entity => {
     const fields: Field[] = [];
 
     let newEntity:Entity = {
@@ -84,15 +83,16 @@ const CreateNewEntity = (fieldInfo:string[], Id:number):Entity => {
         Color: getEntityColor(),
         Fields: 0,
         Actions: Id,
-        selected: true
+        selected: true,
+        projectId:projectId
     };
 
     return newEntity;
 };
 
-export const NewEntity = (name:string, entityList:Entity[]):Entity => {
+export const NewEntity = (name:string, entityList:Entity[], projectId:number):Entity => {
     let tmpEntityList:Entity[] =[]; 
-    let newEntity:Entity = CreateNewEntity(['','','','e_'+entityList.length,name], entityList.length);
+    let newEntity:Entity = CreateNewEntity(['','','','e_'+entityList.length,name], entityList.length ,projectId);
     entityList.forEach((entity) => { tmpEntityList.push(entity); });
     newEntity.FieldList!.push(CreateNewField(0,'Without Fields',newEntity.FieldList!.length.toString(), newEntity.Code))
     newEntity.Fields = newEntity.FieldList!.length;

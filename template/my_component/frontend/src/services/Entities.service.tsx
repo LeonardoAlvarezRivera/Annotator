@@ -4,8 +4,8 @@ import { Entity } from "../objects/Entity.interface";
 export class EntitiesService{
     constructor (){}
 
-    getList(){
-        const result = dbAnotadorInstance.entities.toArray();
+    getList(id:number){
+        const result = dbAnotadorInstance.entities.where({projectId: id}).toArray();
 
         return result;
     }
@@ -27,5 +27,10 @@ export class EntitiesService{
 
     async addSet(entities: Entity[]):Promise<number>{
         return await dbAnotadorInstance.entities.bulkAdd(entities).then(res => {return res;})
+    }
+    delete(key:number)
+    {
+        const result = dbAnotadorInstance.entities.delete(key);
+        return result;
     }
 }

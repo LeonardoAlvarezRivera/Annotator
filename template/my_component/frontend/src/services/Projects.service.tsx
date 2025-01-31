@@ -24,4 +24,9 @@ export class ProjectsService{
         const result = dbAnotadorInstance.projects.add(project);
         return result;
     }
+    delete(key:number)
+    {
+        const result = dbAnotadorInstance.projects.delete(key);
+        return result;
+    }
 }

@@ -61,4 +61,10 @@ export class AnnotationService{
         const result = dbAnotadorInstance.annotations.where({id:annId}).first();
         return result;
     }
+
+    getAllItems(){
+        const result = dbAnotadorInstance.annotations.toArray();
+
+        return result;
+    }
 }
