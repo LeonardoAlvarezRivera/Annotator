@@ -10,13 +10,14 @@ export class FileParser{
 
     }
 
-    async parseFiles(files:File[]){
+    async parseFiles(files:File[], projectId:number){
         var cont: number = 0;
         for(cont; cont< files.length; cont++)
         {
             var newDocument: Document = {
                 title: getTitleDocument(files[cont]),
-                textContent: await ReadFile(files[cont])
+                textContent: await ReadFile(files[cont]),
+                projectId: projectId
             }
 
             _documentService.add(newDocument).then(docId => {

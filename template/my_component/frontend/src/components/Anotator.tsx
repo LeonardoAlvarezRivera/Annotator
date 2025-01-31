@@ -12,6 +12,7 @@ import { FileParser } from "../tools/FileParser";
 import { Field } from "../objects/Field.interface";
 import { basicFormatString, convertStringToDOM, findNewAnnotationsInText, readBinaryContent } from "../tools/Utils";
 import { ComunicationService } from "../notifications/comunication.service";
+import { Project } from '../objects/Project.interface';
 
 
 
@@ -58,6 +59,10 @@ class Anotator extends React.Component<Props>{
     };
 
     isTagSelected:boolean = false;
+    _currentProject:Project = {
+        name: "",
+        description: ""
+    };
 
     _statusClickSave: number = 0;
     textPlain:string = '';
@@ -81,6 +86,11 @@ class Anotator extends React.Component<Props>{
 
     constructor(props:Props){
         super(props);
+
+        if(props.Project)
+        {
+            this._currentProject = props.Project;
+        }
         if(this.entityList.length === 0)
         {
             this.loadEntities();
@@ -362,7 +372,7 @@ class Anotator extends React.Component<Props>{
      handleFileChange = (e:any) => {
         // Check if user has entered the file
         if (e.target.files.length) {
-            this._parseFileService.parseFiles(e.target.files).then(result => {
+            this._parseFileService.parseFiles(e.target.files,this._currentProject.id!).then(result => {
                 this.initDocuments();
             });
         }
@@ -372,7 +382,7 @@ class Anotator extends React.Component<Props>{
      * Obtiene el listado de documentos y carga el primero de la lista
      */
     initDocuments = () => {
-        var result = this._documentService.getList();
+        var result = this._documentService.getList(this._currentProject.id!);
         result.then(res => {
             this.documentList = res? (res as Document[]): ([] as Document[]); 
             if(this.documentList.length > 0){
@@ -540,7 +550,7 @@ class Anotator extends React.Component<Props>{
      * Carga de las entitidades cargados en el anotador
      */
     loadEntities = () => {
-        var result = this.entityService.getList();
+        var result = this.entityService.getList(this._currentProject.id!);
         result.then(res =>
         {
             this.entityList = res? (res as Entity[]): ([] as Entity[]); 

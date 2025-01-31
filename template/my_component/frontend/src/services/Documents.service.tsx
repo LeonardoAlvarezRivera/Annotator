@@ -5,8 +5,8 @@ import { Document } from "../objects/Document.interface";
 export class DocumentService{
     constructor (){}
 
-    getList(){
-        const result = dbAnotadorInstance.documents.toArray();
+    getList(projectId:number){
+        const result = dbAnotadorInstance.documents.where({projectId:projectId}).toArray();
         return result;
     }
 
