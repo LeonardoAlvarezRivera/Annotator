@@ -67,7 +67,7 @@ const ContextMenu:FC<ContextMenuProps> = ({x,y,displayValue, xTranslate, yTransl
             }
             updateBulkAnnotations();
         }
-        closeContextMenu();
+        //closeContextMenu();
     }
 
     function deleteBulkAnnotations()
@@ -81,7 +81,6 @@ const ContextMenu:FC<ContextMenuProps> = ({x,y,displayValue, xTranslate, yTransl
         result.then(result => {
             closeContextMenu();
             showAnnotations();
-
         });
     }
 
@@ -144,7 +143,7 @@ const ContextMenu:FC<ContextMenuProps> = ({x,y,displayValue, xTranslate, yTransl
         {
             updateSecondEntityData(entity);
         }
-        closeContextMenu();
+        //closeContextMenu();
     }
 
     function getEntityName(entityId:number):string{
@@ -208,7 +207,7 @@ const ContextMenu:FC<ContextMenuProps> = ({x,y,displayValue, xTranslate, yTransl
         }>
             <li  className="context-menu-item context-menu-label context-menu-line"><span>{getAnnTextToShow(annotationsSelected)}</span> <TextFields className="context-menu-item-icon"></TextFields></li>
             <li onClick={deleteBulkAnnotations} className="context-menu-item context-menu-label context-menu-line"><span>Delete All Annotations</span> <DeleteForever className="context-menu-item-icon"></DeleteForever></li>
-            <li onClick={deleteUniqueAnnotation} className="context-menu-item context-menu-label context-menu-line"><span>Delete this</span> <DeleteForever className="context-menu-item-icon"></DeleteForever></li>
+            <li onClick={deleteUniqueAnnotation} className="context-menu-item context-menu-label context-menu-line"><span>Delete this Annotation</span> <DeleteForever className="context-menu-item-icon"></DeleteForever></li>
 
             {
                 <li className="context-menu-item">

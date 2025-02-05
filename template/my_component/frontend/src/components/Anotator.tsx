@@ -1,6 +1,6 @@
 import React from "react";
 import { Checkbox } from "@mui/material";
-import { Annotation } from "../objects/Annotation.interface";
+import { Annotation } from '../objects/Annotation.interface';
 import { Entity } from "../objects/Entity.interface";
 import { Document } from '../objects/Document.interface';
 import { Props } from "./Anotador";
@@ -18,7 +18,7 @@ import { Project } from '../objects/Project.interface';
 
 
 
-class Anotator extends React.Component<Props>{
+class Anotator extends React.Component<Props, {annotationSelected: Annotation}>{
 
     
     _corpusContainerHTML!:HTMLElement;
@@ -43,20 +43,7 @@ class Anotator extends React.Component<Props>{
         fieldsSecondEntity: [],
         status: 'Draft'
     };
-    _AnnotationSelected:Annotation = {
-        text: "",
-        start: 0,
-        end: 0,
-        paragraph: "",
-        documentId: 0,
-        firstEntityId: -1,
-        secondEntityId: -1,
-        firstEntityCode: '',
-        secondEntityCode: '',
-        fieldsFirstEntity: [],
-        fieldsSecondEntity: [],
-        status: 'Draft'
-    };
+
 
     isTagSelected:boolean = false;
     _currentProject:Project = {
@@ -90,6 +77,8 @@ class Anotator extends React.Component<Props>{
         if(props.Project)
         {
             this._currentProject = props.Project;
+            this.state = {
+                annotationSelected : this._tmpAnotationSelected};
         }
         if(this.entityList.length === 0)
         {
@@ -104,6 +93,8 @@ class Anotator extends React.Component<Props>{
                 this.handleSaveDraftAnnotations();
             }
         });
+
+        //closeContextMenu();
 
         document.addEventListener('mouseup', e => {
             e.stopPropagation();
@@ -136,7 +127,23 @@ class Anotator extends React.Component<Props>{
 
                 //muestro las nuevas anotaciones
                 this._AnnotationsSelectedList = [];
-                this._tmpAnotationSelected.text = "";
+                this.setState({annotationSelected: 
+                {
+                    text: "",
+                    start: 0,
+                    end: 0,
+                    paragraph: "",
+                    documentId: 0,
+                    firstEntityId: -1,
+                    secondEntityId: -1,
+                    firstEntityCode: '',
+                    secondEntityCode: '',
+                    fieldsFirstEntity: [],
+                    fieldsSecondEntity: [],
+                    status: 'Draft'
+                }
+                });
+                this._tmpAnotationSelected = this.state.annotationSelected;
                 this.showDocumentWithAnnotations();
             });
         }
@@ -148,11 +155,23 @@ class Anotator extends React.Component<Props>{
            
            var result = this._annotationsService.addBulk(this._AnnotationsSelectedList);
             result.then(result => {
-
-                //muestro las nuevas anotaciones
-                this._AnnotationsSelectedList = [];
-                this._tmpAnotationSelected.text = "";
-                this.showDocumentWithAnnotations();
+                
+                this._annotationsService.getByDocumentId(this._currentDocument?.id!).then(annotations => {
+                    var filtered =  annotations.filter(item => item.text.toLowerCase() === this._tmpAnotationSelected.text.toLowerCase() );
+                    
+                    if(filtered.length > 0){
+                        var annotation = filtered[0];
+                        this._AnnotationsSelectedList = [];
+                        this.handleFirstEntitySelected(annotation.firstEntityId);
+                        this.handleSecondEntitySelected(annotation.secondEntityId);
+                        this._tmpAnotationSelected = annotation;
+                        this.setState({annotationSelected: annotation});
+                        this._AnnotationsSelectedList = this._annotationsList.filter((tmpAnnotation) => basicFormatString(tmpAnnotation.text) === basicFormatString(this._tmpAnotationSelected.text));
+                      
+                        
+                    }     
+                    this.showDocumentWithAnnotations();
+                });
             });
             
         }
@@ -450,7 +469,7 @@ class Anotator extends React.Component<Props>{
                                     this.handleFirstEntitySelected(annotation.firstEntityId);
                                     this.handleSecondEntitySelected(annotation.secondEntityId);
                                     this._tmpAnotationSelected = annotation;
-                                    this._AnnotationSelected = annotation;
+                                    this.setState({annotationSelected: annotation});
                                     this._AnnotationsSelectedList = this._annotationsList.filter((tmpAnnotation) => basicFormatString(tmpAnnotation.text) === basicFormatString(this._tmpAnotationSelected.text));
                                     this.showDocumentWithAnnotations();
                                     
@@ -480,8 +499,7 @@ class Anotator extends React.Component<Props>{
                     this.handleFirstEntitySelected(annotation.firstEntityId);
                     this.handleSecondEntitySelected(annotation.secondEntityId);
                     this._tmpAnotationSelected = annotation;
-                    this._AnnotationSelected = annotation;  
-
+                    this.setState({annotationSelected: annotation});
                 }   
                 
                 this.showDocumentWithAnnotations();
@@ -680,13 +698,13 @@ class Anotator extends React.Component<Props>{
                 </div>
                 <div className="area-details-content">
                 <div className="area-details-info">
-                <div className="area-details-data"><span className="area-details-data-title">Text:</span> {this._AnnotationSelected.text}</div>
+                <div className="area-details-data"><span className="area-details-data-title">Text:</span> {this.state.annotationSelected.text}</div>
                         <div className="area-details-data"><span className="area-details-data-title">First Entity:</span> {this.getEntityById(this._tmpAnotationSelected.firstEntityId)?.Entity}</div>
-                        <div className="area-details-data">&emsp; &emsp;<span className="area-details-data-title">First Field:</span> {(this._AnnotationSelected.fieldsFirstEntity!.length >= 1)?this.getFieldByCode(this._tmpAnotationSelected.fieldsFirstEntity![0],this._tmpAnotationSelected.firstEntityId)?.name:'undefined'}</div>
-                        <div className="area-details-data">&emsp; &emsp;<span className="area-details-data-title">Second Field:</span> {(this._AnnotationSelected.fieldsFirstEntity!.length >= 2)?this.getFieldByCode(this._tmpAnotationSelected.fieldsFirstEntity![1],this._tmpAnotationSelected.firstEntityId)?.name:'undefined'}</div>
-                        <div className="area-details-data"><span className="area-details-data-title">Second Entity:</span> {this.getEntityById(this._tmpAnotationSelected.secondEntityId)?.Entity}</div>
-                        <div className="area-details-data">&emsp; &emsp;<span className="area-details-data-title">First Field:</span> {(this._AnnotationSelected.fieldsSecondEntity!.length >= 1)?this.getFieldByCode(this._tmpAnotationSelected.fieldsSecondEntity![0],this._tmpAnotationSelected.secondEntityId)?.name:'undefined'}</div>
-                        <div className="area-details-data">&emsp; &emsp;<span className="area-details-data-title">Second Field:</span> {(this._AnnotationSelected.fieldsSecondEntity!.length >= 2)?this.getFieldByCode(this._tmpAnotationSelected.fieldsSecondEntity![1],this._tmpAnotationSelected.secondEntityId)?.name:'undefined'}</div>
+                        <div className="area-details-data">&emsp; &emsp;<span className="area-details-data-title">First Field:</span> {(this.state.annotationSelected.fieldsFirstEntity!.length >= 1)?this.getFieldByCode(this._tmpAnotationSelected.fieldsFirstEntity![0],this._tmpAnotationSelected.firstEntityId)?.name:'undefined'}</div>
+                        <div className="area-details-data">&emsp; &emsp;<span className="area-details-data-title">Second Field:</span> {(this.state.annotationSelected.fieldsFirstEntity!.length >= 2)?this.getFieldByCode(this._tmpAnotationSelected.fieldsFirstEntity![1],this._tmpAnotationSelected.firstEntityId)?.name:'undefined'}</div>
+                        <div className="area-details-data"><span className="area-details-data-title">Second Entity:</span> {this.getEntityById(this.state.annotationSelected.secondEntityId)?.Entity}</div>
+                        <div className="area-details-data">&emsp; &emsp;<span className="area-details-data-title">First Field:</span> {(this.state.annotationSelected.fieldsSecondEntity!.length >= 1)?this.getFieldByCode(this._tmpAnotationSelected.fieldsSecondEntity![0],this._tmpAnotationSelected.secondEntityId)?.name:'undefined'}</div>
+                        <div className="area-details-data">&emsp; &emsp;<span className="area-details-data-title">Second Field:</span> {(this.state.annotationSelected.fieldsSecondEntity!.length >= 2)?this.getFieldByCode(this._tmpAnotationSelected.fieldsSecondEntity![1],this._tmpAnotationSelected.secondEntityId)?.name:'undefined'}</div>
                 </div>
                 </div>
             </div>

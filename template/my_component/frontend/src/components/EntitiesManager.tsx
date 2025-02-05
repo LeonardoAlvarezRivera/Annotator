@@ -107,7 +107,7 @@ export default function EntitiesManager(props:Props){
 
 
         const handleLoadEntities =  (entityId:number) => {
-            var result = entityService.getList(props.Project.id!);
+            var result = entityService.getList(project.id!);
             result.then(res =>
                 {
                     const allEntities = res? (res as Entity[]): ([] as Entity[]); 
@@ -130,7 +130,6 @@ export default function EntitiesManager(props:Props){
         const handleAddEntity = (e:any) => {
             // Prevent the browser from reloading the page
             e.preventDefault();
-            setProject(props.Project);
             // Read the form data
             const form = e.target;
             const formData = new FormData(form);
@@ -140,10 +139,10 @@ export default function EntitiesManager(props:Props){
 
             // Or you can work with it as a plain object:
             const formJson = Object.fromEntries(formData.entries());
-            
             var newEntity = NewEntity(formJson.entityName.toString(), entityList, project.id!);
+            form.reset();
             entityService.add(newEntity).then(res => {
-                handleLoadEntities(res);
+                handleLoadEntities(0);
             });
           };
 
@@ -151,10 +150,9 @@ export default function EntitiesManager(props:Props){
         const handleFileChange = async (e:any) => {
             // Check if user has entered the file
             if (e.target.files.length) {
-                setProject(props.Project);
                 const inputFile = e.target.files[0];
                 var csvContent = await ReadFileToText(inputFile);
-                entityList = ParseEntitiesCSV(csvContent, props.Project.id!);
+                entityList = ParseEntitiesCSV(csvContent, project.id!);
                 await entityService.addSet(entityList);
 
                 handleLoadEntities(0);
@@ -162,6 +160,9 @@ export default function EntitiesManager(props:Props){
         }
 
         if(props.Project){
+            if(project.name === ''){
+                setProject(props.Project);
+            }
             handleLoadEntities(0);
         }
 
@@ -231,6 +232,7 @@ export default function EntitiesManager(props:Props){
                                     name="entityName"
                                     className="input-anotador-text input-entity-add" 
                                     type="text"
+                                   
                                     placeholder="Name"/>
                                 <button type="submit" className="button-standard button-standard-success ">Add</button>
                             </form>

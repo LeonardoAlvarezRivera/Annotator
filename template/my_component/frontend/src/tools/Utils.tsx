@@ -37,6 +37,7 @@ export const readBinaryContent = (buffer: ArrayBuffer):string => {
 export const convertStringToDOM = (corpusDocument: HTMLElement,content: string, annotationsSelectedList: Annotation[], annotations:Annotation[], entities:Entity[]): string =>{
   var doc = new DOMParser().parseFromString(content, "text/xml");
   var documentSection = document.createElement("section");
+  documentSection.setAttribute("class", 'section-corpus-text');
   
   var annotationsHTML = processHTMLAnnotations(content, annotationsSelectedList, annotations, entities);
   documentSection.insertAdjacentHTML('beforeend',annotationsHTML);
@@ -132,7 +133,7 @@ const buildTextAnnotated = (paragraphContent: string, annotation: Annotation, fi
   var elementContent = document.createElement("span");
   elementContent.setAttribute("class","annotated-content");
   if(annotation.status === 'Saved')
-    elementContent.setAttribute("style","background-color: "+firstColor+"; border: 4px solid "+secondColor+";");
+    elementContent.setAttribute("style","background-color: "+firstColor+"; border: 2px solid "+secondColor+";");
   else if (annotation.status === 'Draft')
     elementContent.setAttribute("style", "background-color: #1b96f1; color: white;");
   else

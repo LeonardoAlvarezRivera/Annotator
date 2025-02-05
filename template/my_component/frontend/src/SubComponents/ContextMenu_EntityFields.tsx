@@ -159,7 +159,7 @@ const ContextMenu_EntityFields:FC<ContextMenuEntityFieldsProps> = ({entities, en
             alert('Asegurese de tener un primer field antes de agregar el segundo');
         }
 
-        closeContextMenu();
+        //closeContextMenu();
     }
     
     return (
@@ -169,13 +169,18 @@ const ContextMenu_EntityFields:FC<ContextMenuEntityFieldsProps> = ({entities, en
             {
                 
                 getEntityFields(entityId).map((field) => {
-                    return (<li 
+
+                    if(field.name !== 'Without Fields'){
+
+                    return (
+                    <li 
                     className="context-submenu-field-item"
                     onClick={(e) => {e.stopPropagation(); handleFieldSelected(field,fieldIndex);}}
                     >
                         <span>{field.name}</span>
 
                     </li>)
+                    }
                 })
         
             }
