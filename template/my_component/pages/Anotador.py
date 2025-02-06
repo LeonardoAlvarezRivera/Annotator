@@ -81,6 +81,12 @@ iframe[title="my_component.my_component"] {
     padding: 0rem;
     max-width: 46rem;
 }
+.st-emotion-cache-mtjnbi {
+    width: 100%;
+    padding: 0rem;
+    max-width: 736px;
+}
+
 <style>
 """
 
