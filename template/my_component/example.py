@@ -1,6 +1,6 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
-from my_component.pages import Anotador, Entities, NER
+from my_component.pages import Projects, NER
 
 #def open(name, authenticator):
 def open():
@@ -15,14 +15,12 @@ def open():
                 st.cache_data.clear()
                 
 
-        option= option_menu("Annotation Tool", ["Entities", "Annotate", "View Annotations", "NER", "File Logs", \
+        option= option_menu("Annotation Tool", ["Projects", "View Annotations", "NER", "File Logs", \
                                                 'Users', 'Statistics'], icons= ['gear', 'markdown', 'eye', \
                                                                                 'house-gear', 'filetype-csv', 'person', 'key'])
         
-    if option == "Entities":
-        Entities.run()
-    elif option  == "Annotate":
-        Anotador.run()
+    if option == "Projects":
+        Projects.run()
     elif option == "View Annotations":
         NER.run()
     elif option == "NER":
