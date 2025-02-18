@@ -71,6 +71,7 @@ export default function Details (props:EntityDetailsProps)  {
         const formJson = Object.fromEntries(formData.entries());
         entityList = NewField(formJson.fieldName.toString(), entityList, entitySelected);
         let tmpEntitySelected = entityList.find((entity) => entity.id == entitySelected.id);
+        form.reset();
         if(tmpEntitySelected){ 
             entitySelected = tmpEntitySelected;
             handleUpdateEntity();

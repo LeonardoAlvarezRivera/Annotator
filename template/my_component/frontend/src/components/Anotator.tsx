@@ -602,6 +602,15 @@ class Anotator extends React.Component<Props, {annotationSelected: Annotation}>{
         return(<div className="container-main" onContextMenu={(e:any) => {e.preventDefault();}}>
         <div id="SideNav" className="area-sidenav">
         <div className="area-tool-container-nav">
+            <div id="NavPlatform" className="area-plat-nav area-tool">
+                <div className="area-tool-container">
+                    
+                        <div className="area-details-header-nav">
+                            <div className="area-details-nav"><span className="entity-selected-back" onClick={this.props.backProjects}>Projects </span> <span className="annotator-project-title">  / {this._currentProject.name}</span></div>
+                        </div>
+                
+                </div>  
+            </div>
             <div id="PlattformImage" className="area-plat-image area-tool">
                 <div className="area-tool-container">
                     <div className="area-details-header">
@@ -620,7 +629,6 @@ class Anotator extends React.Component<Props, {annotationSelected: Annotation}>{
                         }
                     </div>
                 </div>
-    
             </div>
             <div id="EntityList" className="area-entity-list area-tool">
             <div className="area-tool-container">

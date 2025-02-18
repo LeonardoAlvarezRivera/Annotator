@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 
-import { ArrowForwardIos, DeleteForever, DeleteForeverOutlined, Sell, TextFields} from "@mui/icons-material";
+import { ArrowForwardIos, DeleteForever, DeleteForeverOutlined, LooksOneOutlined, LooksOutlined, LooksTwoOutlined, Sell, TextFields} from "@mui/icons-material";
 import { Field } from '../objects/Field.interface';
 import { Entity } from "../objects/Entity.interface";
 import { Annotation } from '../objects/Annotation.interface';
@@ -55,6 +55,16 @@ const ContextMenu:FC<ContextMenuProps> = ({x,y,displayValue, xTranslate, yTransl
                     annSelected.firstEntityId =  -1;
                     annSelected.firstEntityCode = '';
                     annSelected.fieldsFirstEntity =  [];
+
+                    if(annSelected.secondEntityId >= 0){
+                        annSelected.firstEntityId =  annSelected.secondEntityId;
+                        annSelected.firstEntityCode = annSelected.secondEntityCode;
+                        annSelected.fieldsFirstEntity =  annSelected.fieldsSecondEntity;
+
+                        annSelected.secondEntityId =  -1;
+                        annSelected.secondEntityCode = '';
+                        annSelected.fieldsSecondEntity =  [];
+                    }
                 });
             }
             else
@@ -212,7 +222,7 @@ const ContextMenu:FC<ContextMenuProps> = ({x,y,displayValue, xTranslate, yTransl
             {
                 <li className="context-menu-item">
                     <span>{getEntityName(annotation.firstEntityId)}<ArrowForwardIos className="context-menu-item-arrow"></ArrowForwardIos></span>
-
+                    <LooksOneOutlined className="context-menu-item-icon"></LooksOneOutlined>
                     <ul className="context-submenu">
                         <li className="context-submenu-item context-submenu-default-cursor" onClick={(e) => {e.stopPropagation(); clearEntity(0);}}>
                             <span> Clear <DeleteForeverOutlined className="context-menu-item-icon"></DeleteForeverOutlined></span>
@@ -229,9 +239,7 @@ const ContextMenu:FC<ContextMenuProps> = ({x,y,displayValue, xTranslate, yTransl
                             <ContextMenu_EntityFields entities={entities} entityId={annotation.firstEntityId} fieldIndex={1} fieldSelected={0} annotation={annotation} annotationList={annotationList} closeContextMenu={closeContextMenu} refreshData={refreshData}/>
                         </li>
                         <input autoComplete="off" onChange={(e)=> {handleFilterEntities(e);}} className="context-menu-search-item" placeholder="Search"  id="site-search-second" name="q" />
-                        <div className="context-menu-container-options">
-
-                        
+                        <div className="context-menu-container-options"> 
                         {
                             entities.filter((entity) => entity.Entity.toLocaleLowerCase().includes(filterValue.toLocaleLowerCase())).map((entity) => {
                                 return (
@@ -250,8 +258,13 @@ const ContextMenu:FC<ContextMenuProps> = ({x,y,displayValue, xTranslate, yTransl
                 </li>
             }
             {
-                <li className="context-menu-item">
+                
+                <li className="context-menu-item" style={{
+                    display: (annotation.firstEntityId == -1) ? 'none':'flex'
+                }}>
+                    
                     <span>{getEntityName(annotation.secondEntityId)} <ArrowForwardIos className="context-menu-item-arrow"></ArrowForwardIos></span>
+                    <LooksTwoOutlined className="context-menu-item-icon"></LooksTwoOutlined>
                     <ul className="context-submenu">
                         <li className="context-submenu-item" onClick={(e) => {e.stopPropagation(); clearEntity(1);}}>
                             <span>Clear<DeleteForeverOutlined className="context-menu-item-icon"></DeleteForeverOutlined></span>
@@ -285,6 +298,15 @@ const ContextMenu:FC<ContextMenuProps> = ({x,y,displayValue, xTranslate, yTransl
                         }
                         </div>
                     </ul>
+                </li>
+                
+            }
+            {   
+                <li className="context-menu-item" style={{
+                    display: (annotation.firstEntityId > -1) ? 'none':'flex'
+                }}>
+                    <span className="context-menu-item-disabled"> {getEntityName(annotation.secondEntityId)} </span>
+                    <LooksTwoOutlined className="context-menu-item-icon context-menu-item-disabled"></LooksTwoOutlined>
                 </li>
             }
         </ul>  

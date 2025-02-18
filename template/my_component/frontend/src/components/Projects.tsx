@@ -17,6 +17,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import { TextField } from '@mui/material';
+import ProjectDetails from './ProjectDetails';
 
 
 export type DefaultProps = {
@@ -61,9 +62,14 @@ class Projects extends React.Component<DefaultProps, {page:string, openDialog:bo
         });
     }
 
-    openProject = (project:Project) => {
+    openCorpus = (project:Project) => {
         this._selectedProject = project;
         this.setState({ page: 'annotations'});
+    }
+
+    openProject = (project:Project) => {
+        this._selectedProject = project;
+        this.setState({ page: 'project'});
     }
 
     openProjects = ()=>{
@@ -123,7 +129,7 @@ class Projects extends React.Component<DefaultProps, {page:string, openDialog:bo
                             variant="standard"
                         />
                         <TextField
-                            autoFocus
+                            
                             margin="dense"
                             id="description"
                             name="description"
@@ -135,14 +141,14 @@ class Projects extends React.Component<DefaultProps, {page:string, openDialog:bo
                         </DialogContent>
                         <DialogActions>
                         <Button onClick={this.handleClose}>Cancel</Button>
-                        <Button type="submit">Create</Button>
+                        <Button variant='contained' type="submit">Create</Button>
                         </DialogActions>
                     </Dialog>
                     <div className="area-entities-header">
                     <div className="area-entities-header-content">
                         <i className="area-entities-title">Projects</i>
                         <div style={{display: 'contents', width: '100%', height: 'fit-content'}} className='area-projects-button-add'>
-                            <Button style={{position: 'absolute', right: '15px', top: '30px'}} variant="outlined" size='small' onClick={this.handleClickOpen}>
+                            <Button style={{position: 'absolute', right: '15px', top: '30px'}} variant="contained"  size='small' onClick={this.handleClickOpen}>
                                 New Project
                             </Button>
                         </div>
@@ -150,8 +156,6 @@ class Projects extends React.Component<DefaultProps, {page:string, openDialog:bo
                     </div>
                         <div id="area-corpus-separator" className="separator"></div>
                     </div>
-    
-                    
                     <Box 
                         sx={{
                             width: '100%',
@@ -167,7 +171,7 @@ class Projects extends React.Component<DefaultProps, {page:string, openDialog:bo
                                     heigth: '100%'
                                 }}>
                                     
-                                        <CardContent sx={{ height: 'fit-content' }}>
+                                        <CardContent onClick={() => this.openProject(project)} sx={{ height: 'fit-content' }}>
                                             <Typography variant="h5" component="div">
                                                 {project.name}
                                             </Typography>
@@ -177,11 +181,13 @@ class Projects extends React.Component<DefaultProps, {page:string, openDialog:bo
                                         </CardContent>
                                         <CardActions>
                                         <Button 
-                                            onClick={() => this.openProject(project)}
+                                            variant="outlined"
+                                            onClick={() => this.openCorpus(project)}
                                             size="small">
-                                                Annotations
+                                                Corpus
                                         </Button>
                                         <Button 
+                                            variant="outlined"
                                             onClick={() => this.openEntities(project)}
                                             size="small">
                                                 Entities
@@ -200,6 +206,10 @@ class Projects extends React.Component<DefaultProps, {page:string, openDialog:bo
                 }
                 {
                     this.state.page === "annotations" && <Anotator Project={this._selectedProject} backProjects= {this.openProjects} />
+                }
+
+{
+                    this.state.page === "project" && <ProjectDetails Project={this._selectedProject} backProjectsScreen= {this.openProjects} />
                 }
             </div>
         );

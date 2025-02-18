@@ -438,7 +438,14 @@
   .area-plat-image{
     position: relative;
     width: 100%;
-    height: calc(50% - 10px);
+    height: calc(40% - 10px);
+    top: 60px;
+  }
+
+  .area-plat-nav{
+    position: relative;
+    width: 100%;
+    height: 50px;
     top: 0px;
   }
   
@@ -505,6 +512,36 @@
     width: 100%;
     margin-bottom: 5px;
   }
+
+  .area-details-header-nav{
+    display: inline-flex;
+    height: var(--window-heigth-corpus-header);
+    align-items: center;
+    width: 100%;
+    margin-bottom: 5px;
+  }
+
+  .annotator-project-title{
+    width: fit-content;
+    max-width: 150px !important;
+    height: 24px;
+    color: var(--text);
+    align-content: center;
+    font-size: 16px;
+    text-align: left;
+    font-weight: bold;
+    font-family: sans-serif;
+    font-style: normal;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+    margin-left: 5px;
+  }
+
+  br{
+    line-height: 1em;
+  }
   
   .area-details-header-content{
     justify-content: right;
@@ -530,6 +567,25 @@
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+  }
+
+  .area-details-nav{
+    width: fit-content;
+    height: 24px;
+    position: absolute !important;
+    left: 16px;
+    right: 16px;
+    color: var(--text);
+    align-content: center;
+    font-size: 16px;
+    text-align: left;
+    font-weight: bold;
+    font-family: sans-serif;
+    font-style: normal;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: contents;
   }
   
   .area-details-content{
@@ -968,8 +1024,21 @@
 
   .entity-selected-information{
     width: 100%;
+    display: block;
     height: fit-content;
     margin-bottom: 10px;
+    overflow-y: hidden;
+    overflow-x: hidden;
+  }
+
+  .input-full{
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .input-half{
+    width: 50%;
+    margin-bottom: 20px;
   }
 
   .data-field-container{
@@ -1166,6 +1235,10 @@
   padding: 8px 15px 8px 40px;
   cursor: pointer;
   position: relative;
+}
+
+.context-menu-item-disabled{
+  color: #9b9b9b !important;
 }
 
 .context-menu-item-arrow{
