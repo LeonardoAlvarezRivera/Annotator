@@ -246,6 +246,8 @@ const ContextMenu:FC<ContextMenuProps> = ({x,y,displayValue, xTranslate, yTransl
                                 <li className="context-submenu-item"
                                 onClick={(e) => {e.stopPropagation(); entitySelected(entity, 0);}}
                                 >
+                                     <div className="area-entity-circle-context-menu" style={{background: entity.Color}}></div>
+
                                     <span >
                                         {entity.Entity}
                                     </span>
@@ -292,6 +294,7 @@ const ContextMenu:FC<ContextMenuProps> = ({x,y,displayValue, xTranslate, yTransl
                                     className="context-submenu-item"
                                     onClick={(e) => {e.stopPropagation(); entitySelected(entity, 1);}}
                                     >
+                                        <div className="area-entity-circle-context-menu" style={{background: entity.Color}}></div>
                                         <span>{entity.Entity}</span>
                                 </li>)
                             })

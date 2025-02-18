@@ -730,6 +730,15 @@
     border-radius: 5px;
   }
 
+  .area-entity-circle-context-menu{
+    position: absolute;
+    left: 10px;
+    margin-right: 5px;
+    height: 10px;
+    width: 10px;
+    border-radius: 5px;
+  }
+
   .area-entity-rectangle{
     margin-left: 5px;
     margin-right: 5px;

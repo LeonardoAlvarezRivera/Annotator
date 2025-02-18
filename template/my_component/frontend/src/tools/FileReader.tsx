@@ -131,8 +131,8 @@ export const NewField = (fieldName:string, entityList:Entity[], entitySelected:E
 
 export const getEntityColor = ():string => {
     var first:number = 360 * Math.random();
-    var second:number = 25 + 70 * Math.random();
-    var third:number = 85 + 10 * Math.random();
+    var second:number = 60 + 20 * Math.random();
+    var third:number = 65 + 20 * Math.random();
     return "hsl(" + Math.trunc(first) + ',' +
         Math.trunc(second) + '%,' +
         Math.trunc(third) + '%)'
