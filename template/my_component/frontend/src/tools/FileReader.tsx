@@ -1,5 +1,6 @@
 import { Entity } from '../objects/Entity.interface';
 import { Field } from '../objects/Field.interface';
+import { hslToHex } from './Utils';
 
 export const ReadFileToText = (inputFile: File):any =>{
     const temporaryFileReader = new FileReader();
@@ -131,9 +132,13 @@ export const NewField = (fieldName:string, entityList:Entity[], entitySelected:E
 
 export const getEntityColor = ():string => {
     var first:number = 360 * Math.random();
-    var second:number = 60 + 20 * Math.random();
-    var third:number = 65 + 20 * Math.random();
+    var second:number = 55 + 15 * Math.random();
+    var third:number = 55 + 15 * Math.random();
+    
+    //return hslToHex(Math.trunc(first),Math.trunc(second),Math.trunc(third) );
     return "hsl(" + Math.trunc(first) + ',' +
         Math.trunc(second) + '%,' +
         Math.trunc(third) + '%)'
+
+        
 };

@@ -133,7 +133,7 @@ const buildTextAnnotated = (paragraphContent: string, annotation: Annotation, fi
   var elementContent = document.createElement("span");
   elementContent.setAttribute("class","annotated-content");
   if(annotation.status === 'Saved')
-    elementContent.setAttribute("style","background-color: "+firstColor+"; border: 2px solid "+secondColor+";");
+    elementContent.setAttribute("style","color: #1c1c1c; background: linear-gradient(90deg, "+firstColor+" 0%, "+firstColor+" 50%, "+secondColor+" 50%, "+secondColor+" 50%); ");
   else if (annotation.status === 'Draft')
     elementContent.setAttribute("style", "background-color: #1b96f1; color: white;");
   else
@@ -177,4 +177,15 @@ export const removeSpecialCharacters =(str: string): string =>
     str = str.replace(/[&<>]/g, " ");
     str = str.replaceAll("/p", "  ");
     return str;
+}
+
+export const hslToHex = (h:number, s:number, l:number): string => {
+  l /= 100;
+  const a = s * Math.min(l, 1 - l) / 100;
+  const f = (n: number) => {
+    const k = (n + h / 30) % 12;
+    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+    return Math.round(255 * color).toString(16).padStart(2, '0');   // convert to Hex and prefix "0" if needed
+  };
+  return `#${f(0)}${f(8)}${f(4)}`;
 }
