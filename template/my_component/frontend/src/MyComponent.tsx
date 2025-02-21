@@ -16,22 +16,8 @@ class MyComponent extends StreamlitComponentBase<any> {
 
   public render = (): ReactNode => {
     var component:string = this.props.args["tool"]
-    var entityList: Entity[] = this.props.args["entities"]
-
-    
-      //return (<div className="container-main"><Anotator EntityList={entityList} /></div>)
-      return (<div className="container-main"><Projects Component={component}></Projects></div>);
-  
-    
-    /*
-    else
-    {
-      return (<div className="container-main"><EntitiesManager EntityList={entityList}/></div>)
-    }
-    */
+      return (<div className="container-main"><Projects Component={component}></Projects></div>);  
   }
-
-
 }
 
 export default withStreamlitConnection(MyComponent);

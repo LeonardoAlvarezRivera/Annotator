@@ -51,7 +51,6 @@ export default function CorpusComponent(props:ContextMenuProps){
       entityList = props.Entities;
       annotation = props.Annotation;
       annotationsSelected = props.AnnotationsSelected;
-      
       _isTagSelected = props.tagSelected;
     }
   
@@ -64,7 +63,7 @@ export default function CorpusComponent(props:ContextMenuProps){
   
       const {pageX,pageY} = e;
 
-      var pageXResult:number = pageX -290;
+      var pageXResult:number = pageX -270;
 
          
       const {innerWidth, innerHeight} = window;
@@ -76,7 +75,7 @@ export default function CorpusComponent(props:ContextMenuProps){
         {
           const {offsetWidth, offsetHeight} = contextMenuHTMLElement;
   
-          if(pageXResult  >= (innerWidth / 2)){
+          if(pageXResult  >= (innerWidth / 2.5)){
             x = '-100%';
             contextMenuHTMLElement.classList.add('left');
           }
@@ -90,7 +89,7 @@ export default function CorpusComponent(props:ContextMenuProps){
             x = '-100%';
           }
   
-          if(pageY  > (innerHeight / 2)){
+          if(pageY  > (innerHeight / 2.2)){
             y = '-100%';
             contextMenuHTMLElement.classList.add('top');
           }else
@@ -100,8 +99,6 @@ export default function CorpusComponent(props:ContextMenuProps){
         }
       }
       
-
-  
       setContexMenu(
         contextMenu !== null && contextMenu.show !== 'block'?
         {

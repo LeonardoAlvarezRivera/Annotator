@@ -1237,7 +1237,7 @@
 }
 
  .context-menu-item, .context-submenu-item, .context-submenu-field-item{
-  height: 40px;
+  height: 35px;
   width: calc(200px);
   display: flex;
   align-items: center;
@@ -1299,7 +1299,7 @@
 }
 
  .context-submenu, .context-submenu-field, .context-submenu-field-list{
-  top: 0;
+  /*top: 0;*/
   left: 100%;
   display: none;
 }
@@ -1346,7 +1346,7 @@
 
 
 .context-menu-absolute.top.left .context-submenu-field{
-  transform: translate(-100%, -100%);
+  transform: translate(-100%, -50%);
 }
 
 .context-menu-absolute.left .context-submenu-field-list{

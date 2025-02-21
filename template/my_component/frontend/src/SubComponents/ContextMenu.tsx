@@ -224,16 +224,22 @@ const ContextMenu:FC<ContextMenuProps> = ({x,y,displayValue, xTranslate, yTransl
                     <span>{getEntityName(annotation.firstEntityId)}<ArrowForwardIos className="context-menu-item-arrow"></ArrowForwardIos></span>
                     <LooksOneOutlined className="context-menu-item-icon"></LooksOneOutlined>
                     <ul className="context-submenu">
-                        <li className="context-submenu-item context-submenu-default-cursor" onClick={(e) => {e.stopPropagation(); clearEntity(0);}}>
+                        <li className="context-submenu-item context-submenu-default-cursor" style={{
+                                        display: (annotation.firstEntityId == -1) ? 'none':'flex'
+                                    }} onClick={(e) => {e.stopPropagation(); clearEntity(0);}}>
                             <span> Clear <DeleteForeverOutlined className="context-menu-item-icon"></DeleteForeverOutlined></span>
                
                         </li>
-                        <li className="context-submenu-item context-submenu-default-cursor">
+                        <li className="context-submenu-item context-submenu-default-cursor" style={{
+                                        display: (annotation.firstEntityId == -1) ? 'none':'flex'
+                                    }}>
                             <span>{getFieldName(annotation.firstEntityId,annotation.fieldsFirstEntity!,0)} <Sell className="context-menu-item-icon"></Sell></span>
                             <ArrowForwardIos className="context-menu-item-arrow"></ArrowForwardIos>
                             <ContextMenu_EntityFields entities={entities} entityId={annotation.firstEntityId} fieldIndex={0} fieldSelected={0} annotation={annotation} annotationList={annotationList} closeContextMenu={closeContextMenu} refreshData={refreshData}/>
                         </li>
-                        <li className="context-submenu-item context-submenu-default-cursor context-menu-line">
+                        <li className="context-submenu-item context-submenu-default-cursor context-menu-line" style={{
+                                        display: (annotation.firstEntityId == -1) ? 'none':'flex'
+                                    }}>
                             <span>{getFieldName(annotation.firstEntityId,annotation.fieldsFirstEntity!,1)} <Sell className="context-menu-item-icon"></Sell></span>
                             <ArrowForwardIos className="context-menu-item-arrow"></ArrowForwardIos>
                             <ContextMenu_EntityFields entities={entities} entityId={annotation.firstEntityId} fieldIndex={1} fieldSelected={0} annotation={annotation} annotationList={annotationList} closeContextMenu={closeContextMenu} refreshData={refreshData}/>
@@ -268,19 +274,26 @@ const ContextMenu:FC<ContextMenuProps> = ({x,y,displayValue, xTranslate, yTransl
                     <span>{getEntityName(annotation.secondEntityId)} <ArrowForwardIos className="context-menu-item-arrow"></ArrowForwardIos></span>
                     <LooksTwoOutlined className="context-menu-item-icon"></LooksTwoOutlined>
                     <ul className="context-submenu">
-                        <li className="context-submenu-item" onClick={(e) => {e.stopPropagation(); clearEntity(1);}}>
-                            <span>Clear<DeleteForeverOutlined className="context-menu-item-icon"></DeleteForeverOutlined></span>
-
-                            
+                        
+                           
+                        <li className="context-submenu-item" style={{
+                                display: (annotation.secondEntityId == -1) ? 'none':'flex'
+                            }} onClick={(e) => {e.stopPropagation(); clearEntity(1);}}>
+                        <span>Clear<DeleteForeverOutlined className="context-menu-item-icon"></DeleteForeverOutlined></span>
                         </li>
-                        <li className="context-submenu-item">
+                    
+                        <li className="context-submenu-item"  style={{
+                                        display: (annotation.secondEntityId == -1) ? 'none':'flex'
+                                    }}>
                             <span>{getFieldName(annotation.secondEntityId,annotation.fieldsSecondEntity!,0)} <Sell className="context-menu-item-icon"></Sell></span>
                             <ArrowForwardIos className="context-menu-item-arrow"></ArrowForwardIos>
                             <ContextMenu_EntityFields entities={entities} entityId={annotation.secondEntityId} fieldIndex={0} fieldSelected={1} annotation={annotation} annotationList={annotationList} closeContextMenu={closeContextMenu} refreshData={refreshData}/>
 
                             
                         </li>
-                        <li className="context-submenu-item context-menu-line">
+                        <li className="context-submenu-item context-menu-line" style={{
+                                        display: (annotation.secondEntityId == -1) ? 'none':'flex'
+                                    }}>
                             <span>{getFieldName(annotation.secondEntityId,annotation.fieldsSecondEntity!,1)} <Sell className="context-menu-item-icon"></Sell></span>
                             <ArrowForwardIos className="context-menu-item-arrow"></ArrowForwardIos>
                             <ContextMenu_EntityFields entities={entities} entityId={annotation.secondEntityId} fieldIndex={1} fieldSelected={1} annotation={annotation} annotationList={annotationList} closeContextMenu={closeContextMenu} refreshData={refreshData}/>
