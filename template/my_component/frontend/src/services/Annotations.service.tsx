@@ -9,6 +9,11 @@ export class AnnotationService{
         return result;
     }
 
+    getAllAnnotations(){
+        const result = dbAnotadorInstance.annotations.toArray();
+        return result;
+    }
+
     deleteBulk(keys:number[]){
         const result = dbAnotadorInstance.annotations.bulkDelete(keys);
         return result;

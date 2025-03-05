@@ -13,6 +13,8 @@ import { Field } from "../objects/Field.interface";
 import { basicFormatString, convertStringToDOM, findNewAnnotationsInText, readBinaryContent } from "../tools/Utils";
 import { ComunicationService } from "../notifications/comunication.service";
 import { Project } from '../objects/Project.interface';
+import { ExportData } from "../tools/ExportData";
+import { EXPORT_JSON_NER, EXPORT_JSON_TAGTOG } from "../tools/Contants";
 
 
 
@@ -60,6 +62,7 @@ class Anotator extends React.Component<Props, {annotationSelected: Annotation}>{
     private _annotationsService = new AnnotationService();
     private _communicationService = new ComunicationService();
     private _parseFileService: FileParser = new FileParser();
+    private _exportService: ExportData = new ExportData();
 
     entityList: Entity[]=[];
     documentList: Document[] = [];
@@ -547,6 +550,7 @@ class Anotator extends React.Component<Props, {annotationSelected: Annotation}>{
                 this._tmpAnotationSelected.end = selectedIndex + markerTextChar.textContent!.length;
                 this._tmpAnotationSelected.documentId = this._currentDocument?.id!;
 
+
                 this.searchAnnotationMatches();
             }
             else
@@ -556,7 +560,7 @@ class Anotator extends React.Component<Props, {annotationSelected: Annotation}>{
         }
     }
 
-    searchAnnotationMatches = () => {
+    searchAnnotationMatches =  () => {
         //creo las nuevas anotaciones
         this._AnnotationsSelectedList = [];
         if(this._tmpAnotationSelected.text !== "" ){
@@ -594,6 +598,17 @@ class Anotator extends React.Component<Props, {annotationSelected: Annotation}>{
 
         
         return field;
+    }
+
+    handleExportData = () => {
+
+        var result = this._annotationsService.getAllAnnotations();
+        result.then(annotations => {
+            const documentIds = this.documentList.map(document => document.id);
+            var annotationsOfProject = annotations.filter(annotation => documentIds.includes(annotation.documentId) );
+            this._exportService.startExportProcess(EXPORT_JSON_NER, annotationsOfProject, this.entityList, this.documentList);
+
+        });
     }
       
 
@@ -635,7 +650,7 @@ class Anotator extends React.Component<Props, {annotationSelected: Annotation}>{
                 <div className="area-details-header">
                 <div className="area-details-header-content">
                     <i className="area-details-title">Entities</i>
-                    <button type="button" className="button-option-small button-option-unselected ">
+                    <button type="button" className="button-option-small button-option-unselected " onClick={this.handleExportData}>
                     <span className="material-symbols-outlined">
                         ios_share
                     </span>

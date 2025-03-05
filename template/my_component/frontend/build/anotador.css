@@ -1158,6 +1158,10 @@
   .section-corpus-text{
     line-height: 2.2em;
   }
+
+  .section-corpus-paragraph{
+    margin-top: 1px;
+  }
   .annotated-content-entity:hover{
     cursor: pointer;
     box-shadow: 0px 0px 8px 0px rgb(227, 227, 227);
@@ -1246,9 +1250,11 @@
   position: relative;
 }
 
-.context-menu-item-disabled{
+.context-menu-item-disabled, .context-submenu-item-disabled{
   color: #9b9b9b !important;
 }
+
+
 
 .context-menu-item-arrow{
   position: absolute;

@@ -238,12 +238,20 @@ const ContextMenu:FC<ContextMenuProps> = ({x,y,displayValue, xTranslate, yTransl
                             <ContextMenu_EntityFields entities={entities} entityId={annotation.firstEntityId} fieldIndex={0} fieldSelected={0} annotation={annotation} annotationList={annotationList} closeContextMenu={closeContextMenu} refreshData={refreshData}/>
                         </li>
                         <li className="context-submenu-item context-submenu-default-cursor context-menu-line" style={{
-                                        display: (annotation.firstEntityId == -1) ? 'none':'flex'
+                                        display: (annotation.firstEntityId == -1 || annotation.fieldsFirstEntity!.length ==  0) ? 'none':'flex'
                                     }}>
                             <span>{getFieldName(annotation.firstEntityId,annotation.fieldsFirstEntity!,1)} <Sell className="context-menu-item-icon"></Sell></span>
                             <ArrowForwardIos className="context-menu-item-arrow"></ArrowForwardIos>
                             <ContextMenu_EntityFields entities={entities} entityId={annotation.firstEntityId} fieldIndex={1} fieldSelected={0} annotation={annotation} annotationList={annotationList} closeContextMenu={closeContextMenu} refreshData={refreshData}/>
                         </li>
+                        {   
+                            <li className="context-submenu-item context-submenu-default-cursor context-menu-line" style={{
+                                display: (annotation.firstEntityId == -1 || annotation.fieldsFirstEntity!.length >= 1) ? 'none':'flex'
+                            }}>
+                                <span className="context-submenu-item-disabled">{getFieldName(annotation.firstEntityId,annotation.fieldsFirstEntity!,1)} <Sell className="context-menu-item-icon context-submenu-item-disabled"></Sell></span>
+                                <ArrowForwardIos className="context-menu-item-arrow context-submenu-item-disabled"></ArrowForwardIos>
+                            </li>
+                        }
                         <input autoComplete="off" onChange={(e)=> {handleFilterEntities(e);}} className="context-menu-search-item" placeholder="Search"  id="site-search-second" name="q" />
                         <div className="context-menu-container-options"> 
                         {
@@ -282,7 +290,7 @@ const ContextMenu:FC<ContextMenuProps> = ({x,y,displayValue, xTranslate, yTransl
                         <span>Clear<DeleteForeverOutlined className="context-menu-item-icon"></DeleteForeverOutlined></span>
                         </li>
                     
-                        <li className="context-submenu-item"  style={{
+                        <li className="context-submenu-item context-submenu-default-cursor"  style={{
                                         display: (annotation.secondEntityId == -1) ? 'none':'flex'
                                     }}>
                             <span>{getFieldName(annotation.secondEntityId,annotation.fieldsSecondEntity!,0)} <Sell className="context-menu-item-icon"></Sell></span>
@@ -291,13 +299,21 @@ const ContextMenu:FC<ContextMenuProps> = ({x,y,displayValue, xTranslate, yTransl
 
                             
                         </li>
-                        <li className="context-submenu-item context-menu-line" style={{
-                                        display: (annotation.secondEntityId == -1) ? 'none':'flex'
+                        <li className="context-submenu-item context-submenu-default-cursor context-menu-line" style={{
+                                        display: (annotation.secondEntityId == -1 || annotation.fieldsSecondEntity!.length ==  0) ? 'none':'flex'
                                     }}>
                             <span>{getFieldName(annotation.secondEntityId,annotation.fieldsSecondEntity!,1)} <Sell className="context-menu-item-icon"></Sell></span>
                             <ArrowForwardIos className="context-menu-item-arrow"></ArrowForwardIos>
                             <ContextMenu_EntityFields entities={entities} entityId={annotation.secondEntityId} fieldIndex={1} fieldSelected={1} annotation={annotation} annotationList={annotationList} closeContextMenu={closeContextMenu} refreshData={refreshData}/>
                         </li>
+                        {   
+                            <li className="context-submenu-item context-submenu-default-cursor context-menu-line" style={{
+                                display: (annotation.secondEntityId == -1 || annotation.fieldsSecondEntity!.length >= 1) ? 'none':'flex'
+                            }}>
+                                <span className="context-submenu-item-disabled">{getFieldName(annotation.firstEntityId,annotation.fieldsSecondEntity!,1)} <Sell className="context-menu-item-icon context-submenu-item-disabled"></Sell></span>
+                                <ArrowForwardIos className="context-menu-item-arrow context-submenu-item-disabled"></ArrowForwardIos>
+                            </li>
+                        }
                         <input autoComplete="off" onChange={(e)=> {handleFilterEntities(e);}} className="context-menu-search-item" placeholder="Search"  id="site-search" name="q" />
                         <div className="context-menu-container-options">
                         {

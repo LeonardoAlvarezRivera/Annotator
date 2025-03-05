@@ -13,6 +13,7 @@
     "@react-rxjs/utils": "^0.9.7",
     "dexie": "^4.0.7",
     "dexie-react-hooks": "^1.1.7",
+    "jszip": "^3.10.1",
     "papaparse": "^5.4.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

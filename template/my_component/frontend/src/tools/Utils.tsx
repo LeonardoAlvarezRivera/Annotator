@@ -39,10 +39,20 @@ export const convertStringToDOM = (corpusDocument: HTMLElement,content: string, 
   var documentSection = document.createElement("section");
   documentSection.setAttribute("class", 'section-corpus-text');
   
-  var annotationsHTML = processHTMLAnnotations(content, annotationsSelectedList, annotations, entities);
-  documentSection.insertAdjacentHTML('beforeend',annotationsHTML);
+  var paragraphs = content.split('\n').filter(item => item !== '\r');
+  paragraphs.forEach((paragraph, index) => {
+    var elementP = doc.createElement("p");
+    var annSelectedbyParagraph = annotationsSelectedList.filter(item => item.paragraph === 'p'+  index);
+    var annByParagraph = annotations.filter(item => item.paragraph === 'p'+  index);
+    var annotationsHTML = processHTMLAnnotations(paragraph, annSelectedbyParagraph, annByParagraph, entities);
+    elementP.setAttribute("class", 'section-corpus-paragraph' );
+    elementP.setAttribute("id", 'p'+  index);
+    elementP.insertAdjacentHTML('beforeend', annotationsHTML);
+    documentSection.appendChild(elementP);
+  });
+
   
-  return documentSection.outerHTML.replace(/\n/gi,"<br/>");
+  return documentSection.outerHTML;
 }
 
 export const findNewAnnotationsInText = (selected:Annotation,annotationList: Annotation[], textContent:string, documentId:number, firstEntity:Entity|undefined, secondEntity:Entity|undefined):Annotation[] => {
@@ -53,31 +63,37 @@ export const findNewAnnotationsInText = (selected:Annotation,annotationList: Ann
   var result = annotationList.find(tmpAnnotation => tmpAnnotation.text === textToFound);
   if(result === undefined)
     {
-      let regex_word = new RegExp("(?<![\\w\\d])"+basicFormatString(textToFound)+"(?![\\w\\d])", "gi");
-      let procesedTextContent = basicFormatString(textContent);
+      var paragraphs = textContent.split('\n').filter(item => item !== '\r');
+      paragraphs.forEach((paragraph, index) => {
+        let regex_word = new RegExp("(?<![\\w\\d])"+basicFormatString(textToFound)+"(?![\\w\\d])", "gi");
+        let procesedTextContent = basicFormatString(paragraph);
+        
+        let array1;
+        while ((array1 = regex_word.exec(procesedTextContent)) !== null) {
+
+          newStartIndex = regex_word.lastIndex - textToFound.length;
+          newEndIndex = newStartIndex + textToFound.length;
+            var newAnnotation:Annotation = {
+              text: paragraph.substring(newStartIndex,newEndIndex),
+              start: newStartIndex,
+              end: newEndIndex,
+              paragraph: 'p'+index,
+              documentId: documentId,
+              firstEntityId: (firstEntity)?firstEntity.id!:-1,
+              secondEntityId: (secondEntity)?secondEntity.id!:-1,
+              firstEntityCode: (firstEntity)?firstEntity.Code:'',
+              secondEntityCode: (secondEntity)?secondEntity.Code:'',
+              fieldsFirstEntity: selected.fieldsFirstEntity,
+              fieldsSecondEntity: selected.fieldsSecondEntity,
+              status: 'Draft'
+            };
+
+            annotationList.push(newAnnotation);
+        }
+        newStartIndex = 0;
+        newEndIndex =  newStartIndex + textToFound.length;
+      });
       
-      let array1;
-      while ((array1 = regex_word.exec(procesedTextContent)) !== null) {
-
-        newStartIndex = regex_word.lastIndex - textToFound.length;
-        newEndIndex = newStartIndex + textToFound.length;
-          var newAnnotation:Annotation = {
-            text: textContent.substring(newStartIndex,newEndIndex),
-            start: newStartIndex,
-            end: newEndIndex,
-            paragraph: "",
-            documentId: documentId,
-            firstEntityId: (firstEntity)?firstEntity.id!:-1,
-            secondEntityId: (secondEntity)?secondEntity.id!:-1,
-            firstEntityCode: (firstEntity)?firstEntity.Code:'',
-            secondEntityCode: (secondEntity)?secondEntity.Code:'',
-            fieldsFirstEntity: selected.fieldsFirstEntity,
-            fieldsSecondEntity: selected.fieldsSecondEntity,
-            status: 'Draft'
-          };
-
-          annotationList.push(newAnnotation);
-      }
     }else{
       annotationList = annotationList.filter((tmpAnnotation) => basicFormatString(tmpAnnotation.text) !== basicFormatString(textToFound));
     }
