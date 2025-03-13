@@ -1,4 +1,11 @@
 export interface NERAnnotation{
-    text:       string;
-    entities: (string|number)[][];
+    Anotacion:       string;
+    entities: entityItem[];
+}
+
+export interface entityItem{
+    start: number,
+    end: number,
+    entity: string,
+    fields: string[]
 }

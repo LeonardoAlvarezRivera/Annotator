@@ -1,7 +1,7 @@
 import { Annotation } from '../objects/Annotation.interface';
 import { Entity } from '../objects/Entity.interface';
 import { EXPORT_JSON_NER, EXPORT_JSON_TAGTOG } from './Contants';
-import { NERAnnotation } from '../interfaces/NERAnnotation.interface';
+import { entityItem, NERAnnotation } from '../interfaces/NERAnnotation.interface';
 import JSZip from 'jszip';
 import { Document } from '../objects/Document.interface';
 import { readBinaryContent } from './Utils';
@@ -48,15 +48,36 @@ export class ExportData{
             );
 
            var NERAnn: NERAnnotation = {
-            text: paragraph.replaceAll('\r',''),
+            Anotacion: paragraph.replaceAll('\r',''),
             entities: []
            };
 
            uniqueArray.forEach(item => {
+
+            //add first entity
                var entity = entities.find(entityItem => entityItem.Code === item.firstEntityCode);
                if(entity !== undefined)
                {
-                    NERAnn.entities.push([item.start, item.end, entity.Entity]);
+                    var entityItem: entityItem ={
+                        start: item.start,
+                        end: item.end,
+                        entity: entity.Entity,
+                        fields: (item.fieldsFirstEntity)?this.getFieldsByCode(entity,item.fieldsFirstEntity):[]
+                    };
+                    NERAnn.entities.push(entityItem);
+               }
+
+               //add second entity
+               var secondentity = entities.find(entityItem => entityItem.Code === item.secondEntityCode);
+               if(secondentity !== undefined)
+               {
+                    var entityItem: entityItem ={
+                        start: item.start,
+                        end: item.end,
+                        entity: secondentity.Entity,
+                        fields: (item.fieldsSecondEntity)?this.getFieldsByCode(secondentity,item.fieldsSecondEntity):[]
+                    };
+                    NERAnn.entities.push(entityItem);
                }
            });
 
@@ -64,6 +85,23 @@ export class ExportData{
         });
     
        return JSON.stringify(NERAnnotations,replacer);//this.createZipFile(NERAnnotations, entities, document);
+    }
+
+    private getFieldsByCode(entity:Entity, fieldsCode: string[]):string[]{
+        var fieldsText:string[]=[];
+       
+            fieldsCode.forEach(item=>{
+                if(entity.FieldList !== undefined){
+                    var fieldObject = entity.FieldList.find(field => field.code === item);
+                    if(fieldObject !== undefined)
+                    {
+                        fieldsText.push(fieldObject.name);
+                    }
+                }
+            });
+
+        
+        return fieldsText;
     }
 
     private async createZipFile(zip:JSZip){
