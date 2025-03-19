@@ -130,7 +130,8 @@ class Anotator extends React.Component<Props, {annotationSelected: Annotation}>{
 
                 //muestro las nuevas anotaciones
                 this._AnnotationsSelectedList = [];
-                this.setState({annotationSelected: 
+                this.setState({annotationSelected: this._tmpAnotationSelected});
+                /*this.setState({annotationSelected: 
                 {
                     text: "",
                     start: 0,
@@ -146,6 +147,7 @@ class Anotator extends React.Component<Props, {annotationSelected: Annotation}>{
                     status: 'Draft'
                 }
                 });
+                */
                 this._tmpAnotationSelected = this.state.annotationSelected;
                 this.showDocumentWithAnnotations();
             });
@@ -362,6 +364,7 @@ class Anotator extends React.Component<Props, {annotationSelected: Annotation}>{
     handleFieldCheckChange = (field:Field) =>{
         field.selected = !field.selected;
         this.forceUpdate();
+        this.handleSearchAnnotations();
     }
     handleEntityCheckChange = (entity:Entity)  => {
         entity.selected = !entity.selected;
@@ -373,6 +376,8 @@ class Anotator extends React.Component<Props, {annotationSelected: Annotation}>{
                 field.selected = false;
         });
         this.forceUpdate();
+
+        this.handleSearchAnnotations();
     }
     handleFieldListStatus =  (entityId:Number) => {
         // Check if user has entered the file
@@ -631,6 +636,14 @@ class Anotator extends React.Component<Props, {annotationSelected: Annotation}>{
                     <div className="area-details-header">
                     <div className="area-details-header-content">
                         <i className="area-details-title">Documents</i>
+                        <div className="container-input-document">
+                            <input type="file" onChange={this.handleFileChange} name="file-1" id="documentFile" accept=".txt" className="inputfile-document inputfile-document-1"/>
+                            <label htmlFor="documentFile">
+                                <span className="material-symbols-outlined">
+                                    Add
+                                </span>
+                            </label>
+                        </div>
                     </div>
                     <div id="area-corpus-separator" className="separator separator-blue"></div>
                 </div>
@@ -653,11 +666,6 @@ class Anotator extends React.Component<Props, {annotationSelected: Annotation}>{
                     <button type="button" className="button-option-small button-option-unselected " onClick={this.handleExportData}>
                     <span className="material-symbols-outlined">
                         ios_share
-                    </span>
-                    </button>
-                    <button type="button" className="button-option-small button-option-unselected " onClick={this.handleSearchAnnotations}>
-                    <span className="material-symbols-outlined">
-                        search
                     </span>
                     </button>
                 </div>

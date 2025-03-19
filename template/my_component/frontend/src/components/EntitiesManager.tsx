@@ -121,6 +121,20 @@ export default function EntitiesManager(props:Props){
         
         }
 
+        const filterExistingEntities = async (entityList:Entity[])=>{
+            
+            var result = entityService.getList(project.id!);
+            await result.then(async res =>
+                {
+                    var newEntities:Entity[] = [];
+                    const allEntities = res? (res as Entity[]): ([] as Entity[]); 
+                    const allEntitiesIds = allEntities.map((entity) => entity.Code);
+                    newEntities = entityList.filter((entity) => !allEntitiesIds.includes(entity.Code));
+                    
+                    await entityService.addSet(newEntities);
+                });
+        }
+
         const handleBackHome=  () => {
             setPage("entities");
             handleLoadEntities(0);
@@ -153,7 +167,8 @@ export default function EntitiesManager(props:Props){
                 const inputFile = e.target.files[0];
                 var csvContent = await ReadFileToText(inputFile);
                 entityList = ParseEntitiesCSV(csvContent, project.id!);
-                await entityService.addSet(entityList);
+                filterExistingEntities(entityList);
+                
 
                 handleLoadEntities(0);
             }

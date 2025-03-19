@@ -5,6 +5,7 @@ import { Field } from "../objects/Field.interface";
 import { Annotation } from '../objects/Annotation.interface';
 import { AnnotationService } from "../services/Annotations.service";
 import { basicFormatString } from "../tools/Utils";
+import { DeleteForeverOutlined } from '@mui/icons-material';
 
 interface ContextMenuEntityFieldsProps {
     entities: Entity[],
@@ -32,8 +33,10 @@ const ContextMenu_EntityFields:FC<ContextMenuEntityFieldsProps> = ({entities, en
     function getEntityFields(entityId:number):Field[]{
         var fields:Field[] = [];
         var entityFounded:Entity|undefined = getEntityById(entityId);
-        if(entityFounded)
+        if(entityFounded){
             fields = entityFounded.FieldList!;
+            fields = filterSelectedField(annotation, fields);
+        }
         return fields;
     }
 
@@ -138,6 +141,42 @@ const ContextMenu_EntityFields:FC<ContextMenuEntityFieldsProps> = ({entities, en
         return result;
     }
 
+    function deleteField(fieldsIndex:number){
+        if(annotationsToSave.length > 0){
+            annotationsToSave.forEach(annSelected => {
+                if(fieldSelected == 0 && annSelected.fieldsFirstEntity)
+                {
+                    annSelected.fieldsFirstEntity = annSelected.fieldsFirstEntity.filter((fieldItem, index) => fieldIndex !== index);
+                }
+                else if (fieldSelected ==  1 && annSelected.fieldsSecondEntity){
+                    annSelected.fieldsSecondEntity = annSelected.fieldsSecondEntity.filter((fieldItem, index) => fieldIndex !== index);
+                }
+            });
+            updateBulkAnnotations();
+
+        }
+    }
+
+    function filterSelectedField(annotation:Annotation, fieldList: Field[]):Field[]{
+        var arrayFields: String[] = [];
+        if(entityId === annotation.firstEntityId && annotation.fieldsFirstEntity){
+            arrayFields = annotation.fieldsFirstEntity;
+        }else if (entityId === annotation.secondEntityId && annotation.fieldsSecondEntity){
+            arrayFields = annotation.fieldsSecondEntity;
+        }
+
+
+        return fieldList.filter((field) => !arrayFields.includes(field.code));
+    }
+
+    function handleFieldDeleted(field:Field, fieldIndex:number){
+        annotationsToSave = [];
+        annotationsToSave = annotationList.filter((tmpAnnotation) => basicFormatString(tmpAnnotation.text) === basicFormatString(annotation.text));
+
+        deleteField(fieldIndex);
+    }
+
+
     function handleFieldSelected(field:Field, fieldIndex:number){
         annotationsToSave = [];
         annotationsToSave = annotationList.filter((tmpAnnotation) => basicFormatString(tmpAnnotation.text) === basicFormatString(annotation.text));
@@ -180,6 +219,16 @@ const ContextMenu_EntityFields:FC<ContextMenuEntityFieldsProps> = ({entities, en
                         <span>{field.name}</span>
 
                     </li>)
+                    }else
+                    {
+                        return (
+                            <li 
+                            className="context-submenu-field-item"
+                            onClick={(e) => {e.stopPropagation(); handleFieldDeleted(field,fieldIndex);}}
+                            >
+                                <span>Clear<DeleteForeverOutlined className="context-menu-item-icon"></DeleteForeverOutlined></span>
+        
+                            </li>)
                     }
                 })
         
