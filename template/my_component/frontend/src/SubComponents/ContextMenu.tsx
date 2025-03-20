@@ -172,7 +172,8 @@ const ContextMenu:FC<ContextMenuProps> = ({x,y,displayValue, xTranslate, yTransl
     }
 
     function getFieldName(entityId:number,fields:string[],fieldIndex:number):string{
-        var fieldName:string = 'undefined';
+        var fieldName:string = (fieldIndex == 0)?"First field":"Second field";
+
         const entity = getEntityById(entityId);
         if(entity && fields.length >= 1 && fieldIndex == 0 ){
             const fieldFounded = entity.FieldList!.find((field) => field.code == fields[fieldIndex]);
@@ -190,6 +191,12 @@ const ContextMenu:FC<ContextMenuProps> = ({x,y,displayValue, xTranslate, yTransl
             }
         }
         return fieldName;
+    }
+
+    function filterSelectedEntity(entities:Entity[]):Entity[]{
+        var tmpEntities = entities.filter((entity) => entity.Code !== annotation.secondEntityCode);
+
+        return tmpEntities.filter((entity) => entity.Code !== annotation.firstEntityCode);;
     }
 
     function getAnnTextToShow(selectedEntities:Annotation[]):string{
@@ -238,7 +245,7 @@ const ContextMenu:FC<ContextMenuProps> = ({x,y,displayValue, xTranslate, yTransl
                             <ContextMenu_EntityFields entities={entities} entityId={annotation.firstEntityId} fieldIndex={0} fieldSelected={0} annotation={annotation} annotationList={annotationList} closeContextMenu={closeContextMenu} refreshData={refreshData}/>
                         </li>
                         <li className="context-submenu-item context-submenu-default-cursor context-menu-line" style={{
-                                        display: (annotation.firstEntityId == -1 || annotation.fieldsFirstEntity!.length ==  0) ? 'none':'flex'
+                                        display: (annotation.fieldsFirstEntity!.length ==  0) ? 'none':'flex'
                                     }}>
                             <span>{getFieldName(annotation.firstEntityId,annotation.fieldsFirstEntity!,1)} <Sell className="context-menu-item-icon"></Sell></span>
                             <ArrowForwardIos className="context-menu-item-arrow"></ArrowForwardIos>
@@ -246,7 +253,15 @@ const ContextMenu:FC<ContextMenuProps> = ({x,y,displayValue, xTranslate, yTransl
                         </li>
                         {   
                             <li className="context-submenu-item context-submenu-default-cursor context-menu-line" style={{
-                                display: (annotation.firstEntityId == -1 || annotation.fieldsFirstEntity!.length >= 1) ? 'none':'flex'
+                                display: ( annotation.firstEntityId == -1) ? 'flex':'none'
+                            }}>
+                                <span className="context-submenu-item-disabled">{getFieldName(annotation.firstEntityId,annotation.fieldsFirstEntity!,0)} <Sell className="context-menu-item-icon context-submenu-item-disabled"></Sell></span>
+                                <ArrowForwardIos className="context-menu-item-arrow context-submenu-item-disabled"></ArrowForwardIos>
+                            </li>
+                        }
+                        {   
+                            <li className="context-submenu-item context-submenu-default-cursor context-menu-line" style={{
+                                display: ( annotation.fieldsFirstEntity!.length >= 1) ? 'none':'flex'
                             }}>
                                 <span className="context-submenu-item-disabled">{getFieldName(annotation.firstEntityId,annotation.fieldsFirstEntity!,1)} <Sell className="context-menu-item-icon context-submenu-item-disabled"></Sell></span>
                                 <ArrowForwardIos className="context-menu-item-arrow context-submenu-item-disabled"></ArrowForwardIos>
@@ -255,7 +270,7 @@ const ContextMenu:FC<ContextMenuProps> = ({x,y,displayValue, xTranslate, yTransl
                         <input autoComplete="off" onChange={(e)=> {handleFilterEntities(e);}} className="context-menu-search-item" placeholder="Search"  id="site-search-second" name="q" />
                         <div className="context-menu-container-options"> 
                         {
-                            entities.filter((entity) => entity.Entity.toLocaleLowerCase().includes(filterValue.toLocaleLowerCase())).map((entity) => {
+                            filterSelectedEntity(entities).filter((entity) => entity.Entity.toLocaleLowerCase().includes(filterValue.toLocaleLowerCase())).map((entity) => {
                                 return (
                                 <li className="context-submenu-item"
                                 onClick={(e) => {e.stopPropagation(); entitySelected(entity, 0);}}
@@ -300,7 +315,7 @@ const ContextMenu:FC<ContextMenuProps> = ({x,y,displayValue, xTranslate, yTransl
                             
                         </li>
                         <li className="context-submenu-item context-submenu-default-cursor context-menu-line" style={{
-                                        display: (annotation.secondEntityId == -1 || annotation.fieldsSecondEntity!.length ==  0) ? 'none':'flex'
+                                        display: (annotation.fieldsSecondEntity!.length ==  0) ? 'none':'flex'
                                     }}>
                             <span>{getFieldName(annotation.secondEntityId,annotation.fieldsSecondEntity!,1)} <Sell className="context-menu-item-icon"></Sell></span>
                             <ArrowForwardIos className="context-menu-item-arrow"></ArrowForwardIos>
@@ -308,7 +323,15 @@ const ContextMenu:FC<ContextMenuProps> = ({x,y,displayValue, xTranslate, yTransl
                         </li>
                         {   
                             <li className="context-submenu-item context-submenu-default-cursor context-menu-line" style={{
-                                display: (annotation.secondEntityId == -1 || annotation.fieldsSecondEntity!.length >= 1) ? 'none':'flex'
+                                display: (annotation.secondEntityId == -1) ? 'flex':'none'
+                            }}>
+                                <span className="context-submenu-item-disabled">{getFieldName(annotation.firstEntityId,annotation.fieldsSecondEntity!,0)} <Sell className="context-menu-item-icon context-submenu-item-disabled"></Sell></span>
+                                <ArrowForwardIos className="context-menu-item-arrow context-submenu-item-disabled"></ArrowForwardIos>
+                            </li>
+                        }
+                        {   
+                            <li className="context-submenu-item context-submenu-default-cursor context-menu-line" style={{
+                                display: (annotation.fieldsSecondEntity!.length >= 1) ? 'none':'flex'
                             }}>
                                 <span className="context-submenu-item-disabled">{getFieldName(annotation.firstEntityId,annotation.fieldsSecondEntity!,1)} <Sell className="context-menu-item-icon context-submenu-item-disabled"></Sell></span>
                                 <ArrowForwardIos className="context-menu-item-arrow context-submenu-item-disabled"></ArrowForwardIos>
@@ -317,7 +340,7 @@ const ContextMenu:FC<ContextMenuProps> = ({x,y,displayValue, xTranslate, yTransl
                         <input autoComplete="off" onChange={(e)=> {handleFilterEntities(e);}} className="context-menu-search-item" placeholder="Search"  id="site-search" name="q" />
                         <div className="context-menu-container-options">
                         {
-                            entities.filter((entity) => entity.Entity.toLocaleLowerCase().includes(filterValue.toLocaleLowerCase())).map((entity) => {
+                            filterSelectedEntity(entities).filter((entity) => entity.Entity.toLocaleLowerCase().includes(filterValue.toLocaleLowerCase())).map((entity) => {
                                 return (
                                     <li 
                                     className="context-submenu-item"
