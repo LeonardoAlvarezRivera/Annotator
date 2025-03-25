@@ -550,9 +550,9 @@ class Anotator extends React.Component<Props, {annotationSelected: Annotation}>{
                 var selectedIndex = page_content.indexOf(markerTextChar.textContent!);
     
                 this._tmpAnotationSelected.id = undefined;
-                this._tmpAnotationSelected.text = markerTextChar.textContent!;
+                this._tmpAnotationSelected.text = markerTextChar.textContent!.trim();
                 this._tmpAnotationSelected.start = selectedIndex;
-                this._tmpAnotationSelected.end = selectedIndex + markerTextChar.textContent!.length;
+                this._tmpAnotationSelected.end = selectedIndex + markerTextChar.textContent!.trim().length;
                 this._tmpAnotationSelected.documentId = this._currentDocument?.id!;
 
 
