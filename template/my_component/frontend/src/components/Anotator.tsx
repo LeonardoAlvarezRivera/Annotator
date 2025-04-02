@@ -428,7 +428,11 @@ class Anotator extends React.Component<Props, {annotationSelected: Annotation}>{
         this._corpusTitleHTML.innerHTML = "";
         this._corpusTitleHTML.insertAdjacentHTML('beforeend', doc.title);
         this._currentDocument = doc;
+        this._tmpAnotationSelected.documentId = doc.id!;
+        this.setState({annotationSelected: this._tmpAnotationSelected});
+        sessionStorage.setItem('currentDocumentId', doc.id!.toString());
         this.textPlain = readBinaryContent(this._currentDocument?.textContent);
+
         //load corpus content
         this.handleSearchAnnotations();
     };
@@ -555,8 +559,12 @@ class Anotator extends React.Component<Props, {annotationSelected: Annotation}>{
                 this._tmpAnotationSelected.end = selectedIndex + markerTextChar.textContent!.trim().length;
                 this._tmpAnotationSelected.documentId = this._currentDocument?.id!;
 
+                var storageCurrentDocumentId = parseInt(sessionStorage.getItem('currentDocumentId')!);
 
-                this.searchAnnotationMatches();
+                if(storageCurrentDocumentId == this._currentDocument!.id){
+                    this.searchAnnotationMatches();
+                }
+                
             }
             else
             {
